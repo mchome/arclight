@@ -1,7 +1,5 @@
-'use strict'
-
-const path = require('path')
 import { app, BrowserWindow } from 'electron'
+const path = require('path')
 
 /**
  * Set `__static` path to static files in production
@@ -37,7 +35,7 @@ function createWindow () {
   })
 }
 
-const pluginPath = path.resolve(path.join(__dirname, '../../libs/mpv.js/mpvjs;application/x-mpvjs'))
+const pluginPath = path.resolve(path.join(__dirname, '../../libs/mpv.js/mpvjs.node;application/x-mpvjs'))
 app.commandLine.appendSwitch('ignore-gpu-blacklist')
 app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 

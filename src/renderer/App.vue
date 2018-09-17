@@ -14,15 +14,22 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  font-family: Roboto, Lato, Helvetica, "Segoe UI", "Microsoft YaHei", "Monaco",
-    "Avenir", Arial, sans-serif;
+  font-family: Roboto, Lato, Helvetica, "Monaco", "Avenir", "Segoe UI",
+    "Microsoft YaHei", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: default;
+  user-select: none;
 }
 
 html,
-body,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 #app {
-  -webkit-app-region: drag;
+  height: calc(100% - 4px);
+  border: 2px solid #000000;
 }
 </style>
