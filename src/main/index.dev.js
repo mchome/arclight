@@ -20,5 +20,7 @@ require('electron').app.on('ready', () => {
     })
 })
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
+
 // Require `main` process to boot app
 require('./index')

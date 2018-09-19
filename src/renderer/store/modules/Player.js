@@ -1,17 +1,65 @@
 const state = {
-  _isMaximize: false
+  playerNode: null,
+  currentOrder: 0,
+  currentFileList: [],
+  isPlaying: false,
+  isMute: false
 }
 
 const mutations = {
-  _TOGGLE_MAXIMIZE (state) {
-    if (state._isMaximize) {} else {}
-    state._isMaximize = !state._isMaximize
+  LOAD_PLAYER_NODE (state, playerNode) {
+    state.playerNode = playerNode
+  },
+  LOAD_FILES (state, files) {
+    if (state.playerNode != null) {
+      state.playerNode.postMessage({
+        type: 'command',
+        data: ['loadfile', files[0]]
+      })
+      state.currentFileList = files
+    }
+  },
+  TOGGLE_PLAY (state, playState = null) {
+    if (state.playerNode != null) {
+      const val = (playState == null) ? state.isPlaying : !playState
+      state.playerNode.postMessage({
+        type: 'set_property',
+        data: {
+          name: 'pause',
+          value: val
+        }
+      })
+      state.isPlaying = (playState == null) ? !state.isPlaying : playState
+    }
+  },
+  PLAY_PREVIEW (state) {},
+  PLAY_NEXT (state) {},
+  TOGGLE_MUTE (state) {
+    if (state.playerNode != null) {
+      state.isMute = !state.isMute
+    }
   }
 }
 
 const actions = {
-  _toggleMaximize ({ commit }) {
-    commit('_TOGGLE_MAXIMIZE')
+  loadPlayerNode ({ commit }, playerNode) {
+    commit('LOAD_PLAYER_NODE', playerNode)
+  },
+  loadFiles ({ commit }, files) {
+    commit('TOGGLE_PLAY', false)
+    commit('LOAD_FILES', files)
+  },
+  togglePlay ({ commit }) {
+    commit('TOGGLE_PLAY')
+  },
+  playPrevious ({ commit }) {
+    commit('PLAY_PREVIOUS')
+  },
+  playNext ({ commit }) {
+    commit('PLAY_NEXT')
+  },
+  toggleMute ({ commit }) {
+    commit('TOGGLE_MUTE')
   }
 }
 

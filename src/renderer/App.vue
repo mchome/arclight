@@ -1,12 +1,20 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ border: displayBorder, shadow: displayShadow }">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'arclight'
+  name: 'arclight',
+  computed: {
+    displayBorder () {
+      return !this.$store.state.Window.isFullscreen
+    },
+    displayShadow () {
+      return !this.$store.state.Window.isFullscreen && !this.$store.state.Window.isMaximize
+    }
+  }
 }
 </script>
 
@@ -29,7 +37,15 @@ body {
 }
 
 #app {
-  height: calc(100% - 4px);
+  height: 100%;
+}
+.border {
+  height: calc(100% - 4px) !important;
   border: 2px solid #000000;
+}
+.shadow {
+  margin: 6px;
+  height: calc(100% - 16px) !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 </style>

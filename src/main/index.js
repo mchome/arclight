@@ -20,13 +20,18 @@ function createWindow () {
    */
   mainWindow = new BrowserWindow({
     frame: false,
+    transparent: true,
     width: 500,
     height: 400,
+    minWidth: 500,
+    minHeight: 400,
     useContentSize: true,
     webPreferences: {
       plugins: true
     }
   })
+
+  mainWindow.setPosition(860, 10)
 
   mainWindow.loadURL(winURL)
 
@@ -37,7 +42,7 @@ function createWindow () {
 
 const pluginPath = path.resolve(path.join(__dirname, '../../libs/mpv.js/mpvjs.node;application/x-mpvjs'))
 app.commandLine.appendSwitch('ignore-gpu-blacklist')
-app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
+app.commandLine.appendSwitch('register-pepper-plugins', pluginPath.split('\\').join('/'))
 
 app.on('ready', createWindow)
 

@@ -4,10 +4,6 @@ const state = {
   isMaximize: false,
   isFullscreen: false,
   isPinned: false
-  // position: {
-  //   x: 0,
-  //   y: 0
-  // }
 }
 
 const mutations = {
@@ -46,9 +42,6 @@ const actions = {
   },
   togglePin ({ commit }) {
     commit('TOGGLE_PIN')
-  },
-  toggleClose () {
-    electron.app.exit(0)
   }
 }
 
