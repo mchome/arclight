@@ -21,9 +21,9 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     frame: false,
     transparent: true,
-    width: 500,
+    width: 400,
     height: 400,
-    minWidth: 500,
+    minWidth: 400,
     minHeight: 400,
     useContentSize: true,
     webPreferences: {
@@ -31,7 +31,7 @@ function createWindow () {
     }
   })
 
-  mainWindow.setPosition(860, 10)
+  mainWindow.setPosition(960, 10)
 
   mainWindow.loadURL(winURL)
 

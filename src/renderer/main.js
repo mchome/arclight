@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import { VueHammer } from 'vue2-hammer'
+Vue.use(VueHammer)
+
 window.print = console.log
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

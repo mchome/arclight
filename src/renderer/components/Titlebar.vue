@@ -1,24 +1,31 @@
 <template>
   <div id="titlebar">
-    <div id="title">
+    <div id="title" @dblclick="toggleFullscreen">
       <p>Arclight</p>
     </div>
 
-    <div :class="{ draggable: !isFullscreen && !isMaximize }"></div>
+    <div id="media-title" class="draggable" v-show="!isFullscreen && !isMaximize">
+      <p>{{ fileName }}</p>
+    </div>
+    <div id="media-title" v-show="isFullscreen || isMaximize">
+      <p>{{ fileName }}</p>
+    </div>
 
     <div id="command-btns">
-      <pin-icon v-if="!isPinned" @click.native="togglePin" />
-      <pin-off-icon v-if="isPinned" @click.native="togglePin" />
+      <pin-icon v-show="!isPinned" @click.native="togglePin" title="Pin to top" />
+      <pin-off-icon v-show="isPinned" @click.native="togglePin" title="Unpin" />
 
-      <fullscreen-icon v-if="!isFullscreen && !isMaximize" @click.native="toggleFullscreen" />
-      <fullscreen-exit-icon v-if="isFullscreen && !isMaximize" @click.native="toggleFullscreen" />
+      <fullscreen-icon v-show="!isFullscreen && !isMaximize" @click.native="toggleFullscreen" title="Into fullscreen" />
+      <fullscreen-exit-icon v-show="isFullscreen && !isMaximize" @click.native="toggleFullscreen" title="Exit fullscreen" />
 
-      <window-minimize-icon @click.native="toggleMinimize" />
+      <div id="separator"></div>
 
-      <window-restore-icon v-if="isMaximize && !isFullscreen" @click.native="toggleMaximize" />
-      <window-maximize-icon v-if="!isMaximize && !isFullscreen" @click.native="toggleMaximize" />
+      <window-minimize-icon @click.native="toggleMinimize" title="Minimize" />
 
-      <window-close-icon id="close-btn" @click.native="pushClose" />
+      <window-maximize-icon v-show="!isMaximize && !isFullscreen" @click.native="toggleMaximize" title="Maximize" />
+      <window-restore-icon v-show="isMaximize && !isFullscreen" @click.native="toggleMaximize" title="Unmaximize" />
+
+      <window-close-icon id="close-btn" @click.native="exitApp" title="Exit" />
     </div>
   </div>
 </template>
@@ -71,6 +78,9 @@ export default {
     },
     isPinned () {
       return this.$store.state.Window.isPinned
+    },
+    fileName () {
+      return this.$store.state.Player.fileName
     }
   },
   methods: {
@@ -86,7 +96,7 @@ export default {
     togglePin () {
       this.$store.dispatch('togglePin')
     },
-    pushClose () {
+    exitApp () {
       this.$electron.remote.app.exit(0)
     }
   },
@@ -106,6 +116,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #000000;
 }
 #titlebar > * {
   color: #e2e2e2;
@@ -119,13 +130,16 @@ export default {
   font-weight: lighter;
   align-items: center;
 }
-#title:hover {
-  background-color: #333333;
-}
 
-.draggable {
+#media-title {
   flex: 1;
   height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: lighter;
 }
 
 #command-btns {
@@ -143,7 +157,12 @@ export default {
   background-color: #363736;
 }
 #command-btns svg {
-  transform: scale(0.6);
+  width: 100%;
+  height: 100%;
+  padding: 0.55rem;
+}
+#command-btns > #separator {
+  margin: 0 0.3rem;
 }
 #close-btn:hover {
   background-color: #D41223 !important;

@@ -28,10 +28,15 @@
     "files": [
       "dist/electron/**/*"
     ],
-    "fileAssociations": [{
-      "ext": ["mp4", "mkv"],
-      "name": "Media File"
-    }],
+    "fileAssociations": [
+      {
+        "ext": [
+          "mp4",
+          "mkv"
+        ],
+        "name": "Media File"
+      }
+    ],
     "dmg": {
       "contents": [
         {
@@ -83,7 +88,7 @@
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^3.0.0-beta.12",
+    "electron": "^3.0.0",
     "electron-builder": "^20.19.2",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
@@ -100,6 +105,7 @@
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "0.4.0",
+    "mousetrap": "^1.6.2",
     "multispinner": "^0.2.1",
     "node-loader": "^0.6.0",
     "node-sass": "^4.9.3",
@@ -110,6 +116,7 @@
     "vue-loader": "^15.2.4",
     "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.16",
+    "vue2-hammer": "^2.0.1",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",

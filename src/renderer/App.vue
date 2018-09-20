@@ -5,8 +5,9 @@
 </template>
 
 <script>
+const Mousetrap = require('mousetrap')
+
 export default {
-  name: 'arclight',
   computed: {
     displayBorder () {
       return !this.$store.state.Window.isFullscreen
@@ -14,6 +15,17 @@ export default {
     displayShadow () {
       return !this.$store.state.Window.isFullscreen && !this.$store.state.Window.isMaximize
     }
+  },
+  mounted () {
+    Mousetrap.bind('enter', function () {
+      this.$store.dispatch('toggleFullscreen')
+    }.bind(this))
+    Mousetrap.bind('space', function () {
+      this.$store.dispatch('togglePlay')
+    }.bind(this))
+    Mousetrap.bind('ctrl+c', function () {
+      print('save screenshot to clipboard')
+    })
   }
 }
 </script>
