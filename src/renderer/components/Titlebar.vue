@@ -140,6 +140,9 @@ export default {
   justify-content: center;
   font-size: 0.8rem;
   font-weight: lighter;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 0.7px;
 }
 
 #command-btns {
