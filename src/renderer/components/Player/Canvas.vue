@@ -1,9 +1,11 @@
 <template>
-  <div id="player-canvas">
+  <div id="player-canvas"
+    :class="{
+      fullscreen: isFullscreen,
+      maximize: isMaximize,
+      fillscreen: osdMode && !isFullscreen
+    }">
     <embed id="mpvjs" type="application/x-mpvjs" />
-    <div id="mask-controller"
-      v-hammer:tap="togglePlay"
-      v-hammer:press="togglePlay"></div>
   </div>
 </template>
 
@@ -12,10 +14,18 @@ export default {
   computed: {
     playerReady () {
       return this.$store.state.Player.playerReady
+    },
+    isFullscreen () {
+      return this.$store.state.Window.isFullscreen
+    },
+    isMaximize () {
+      return this.$store.state.Window.isMaximize
+    },
+    osdMode () {
+      return this.$store.state.Settings.osdMode
     }
   },
   watch: {
-    // TODO: delete me
     playerReady (value, _) {
       if (value) {
         this.loadFile()
@@ -23,16 +33,11 @@ export default {
     }
   },
   methods: {
-    // TODO: delete me
     loadFile () {
-      const files = ['']
+      // TODO: delete me
+      const files = [require('path').join(__dirname, '../../../../test.mp4')]
+      print(files)
       this.$store.dispatch('loadFiles', files)
-    },
-    togglePlay () {
-      this.$store.dispatch('togglePlay')
-    },
-    toggleFullscreen () {
-      this.$store.dispatch('toggleFullscreen')
     }
   },
   mounted () {
@@ -45,16 +50,28 @@ export default {
 
 <style>
 #player-canvas {
-  flex: 1;
   display: flex;
-  width: 200%;
+  position: absolute;
+  height: calc(100% - 16px - 6rem);
+  width: calc(100% - 16px);
+  z-index: -1;
+  margin-top: 2rem;
 }
 #mpvjs {
   flex: 1;
 }
-#mask-controller {
-  flex: 1;
-  transform: translateX(-100%);
-  z-index: 10;
+
+.maximize {
+  height: calc(100% - 4px - 6rem) !important;
+  width: calc(100% - 4px) !important;
+}
+.fullscreen {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+.fillscreen {
+  height: calc(100% - 16px) !important;
+  margin: 0 !important;
 }
 </style>

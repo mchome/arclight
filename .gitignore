@@ -9,4 +9,5 @@ npm-debug.log.*
 thumbs.db
 !.gitkeep
 
-libs/*
+*.mp4
+static/*

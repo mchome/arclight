@@ -68,17 +68,16 @@ const actions = {
         } else if (name === 'time-pos' && !state.isSeeking) {
           commit('SET_SEEK', value)
         } else if (name === 'eof-reached') {
-          print('eof reached!')
           commit('TOGGLE_PLAY', false)
           commit('SET_SEEK', 0)
           mpv.seek(state.playerNode, 0)
         } else if (name === 'filename') {
           commit('SET_FILENAME', value)
         } else {
-          print(name, value)
+          print(data)
         }
       } else {
-        print(type, data)
+        print(e.data)
       }
     })
   },

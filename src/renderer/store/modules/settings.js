@@ -1,4 +1,5 @@
 const state = {
+  osdMode: false
 }
 
 const mutations = {

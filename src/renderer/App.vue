@@ -40,6 +40,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   cursor: default;
   user-select: none;
+  /* opacity: 0.95; */
 }
 
 html,

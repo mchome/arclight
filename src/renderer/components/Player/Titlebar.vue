@@ -117,6 +117,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #000000;
+  opacity: 1.0;
+  transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 #titlebar > * {
   color: #e2e2e2;

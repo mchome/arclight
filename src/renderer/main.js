@@ -7,12 +7,16 @@ import store from './store'
 
 import { VueHammer } from 'vue2-hammer'
 Vue.use(VueHammer)
+VueHammer.config.press = {
+  threshold: 2000
+}
 
 window.print = console.log
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
+// Vue.config.performance = true
 
 /* eslint-disable no-new */
 new Vue({

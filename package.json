@@ -28,6 +28,10 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "asar": true,
+    "asarUnpack": [
+      "dist/electron/static/**/*"
+    ],
     "fileAssociations": [
       {
         "ext": [
