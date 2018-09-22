@@ -29,9 +29,6 @@ const mutations = {
   TOGGLE_PLAY (state, value) {
     state.isPlaying = (value != null) ? value : !state.isPlaying
   },
-  STOP (state) {
-    state.isPlaying = false
-  },
   GO_PREVIOUS (state) {
     state.order === 0
       ? state.order = state.currentFileList.length - 1
@@ -98,7 +95,7 @@ const actions = {
     if (state.playerNode != null && state.playerReady) {
       mpv.goPlay(state.playerNode, false)
       mpv.stop(state.playerNode)
-      commit('STOP')
+      commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
       mpv.loadFile(state.playerNode, state.currentFileList[state.order])
     }
@@ -115,8 +112,9 @@ const actions = {
   },
   stop ({ commit }) {
     if (state.playerNode != null && state.playerReady) {
-      mpv.stop(state.playerNode)
-      commit('STOP')
+      mpv.goPlay(state.playerNode, false)
+      mpv.seek(state.playerNode, 0)
+      commit('TOGGLE_PLAY', false)
     }
   },
   seek ({ commit }, seconds) {

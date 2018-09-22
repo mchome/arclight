@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, globalShortcut } from 'electron'
 const path = require('path')
 
 /**
@@ -35,6 +35,16 @@ function createWindow () {
 
   mainWindow.loadURL(winURL)
 
+  globalShortcut.register('MediaPlayPause', () => {
+    mainWindow.webContents.send('global-key-event', 'toggle-play')
+  })
+  globalShortcut.register('MediaPreviousTrack', () => {
+    mainWindow.webContents.send('global-key-event', 'go-previous')
+  })
+  globalShortcut.register('MediaNextTrack', () => {
+    mainWindow.webContents.send('global-key-event', 'go-next')
+  })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -50,6 +60,8 @@ app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
+  globalShortcut.unregisterAll()
+
   if (process.platform !== 'darwin') {
     app.quit()
   }

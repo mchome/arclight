@@ -18,35 +18,54 @@ export default {
     }
   },
   mounted () {
-    // this.$electron.remote.get
+    const electronLocalshortcut = require('electron-localshortcut')
+    const win = this.$electron.remote.BrowserWindow.getFocusedWindow()
+    const { ipcRenderer } = require('electron')
 
-    // Mousetrap.bind('enter', function () {
-    //   this.$store.dispatch('toggleFullscreen')
-    // }.bind(this))
-    // Mousetrap.bind('space', function () {
-    //   this.$store.dispatch('togglePlay')
-    // }.bind(this))
-    // Mousetrap.bind('ctrl+c', function () {
-    //   print('save screenshot to clipboard')
-    // })
-    // Mousetrap.bind('left', function () {
-    //   this.$store.dispatch('goBackward')
-    // }.bind(this), 'keyup')
-    // Mousetrap.bind('right', function () {
-    //   this.$store.dispatch('goForward')
-    // }.bind(this), 'keyup')
-    // Mousetrap.bind('ctrl+left', function () {
-    //   this.$store.dispatch('goPrevious')
-    // }.bind(this), 'keyup')
-    // Mousetrap.bind('ctrl+right', function () {
-    //   this.$store.dispatch('goNext')
-    // }.bind(this), 'keyup')
-    // Mousetrap.bind('up', function () {
-    //   this.$store.dispatch('setVolume', this.volume + 5)
-    // }.bind(this), 'keyup')
-    // Mousetrap.bind('down', function () {
-    //   this.$store.dispatch('setVolume', this.volume - 5)
-    // }.bind(this), 'keyup')
+    electronLocalshortcut.register(win, 'P', function () {
+      this.$store.dispatch('togglePlay')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'Enter', function () {
+      this.$store.dispatch('toggleFullscreen')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'Up', function () {
+      this.$store.dispatch('setVolume', this.volume + 5)
+    }.bind(this))
+    electronLocalshortcut.register(win, 'Down', function () {
+      this.$store.dispatch('setVolume', this.volume - 5)
+    }.bind(this))
+    electronLocalshortcut.register(win, 'Left', function () {
+      this.$store.dispatch('goBackward')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'Right', function () {
+      this.$store.dispatch('goForward')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'CommandOrControl+Left', function () {
+      this.$store.dispatch('goPrevious')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'CommandOrControl+Right', function () {
+      this.$store.dispatch('goNext')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'CommandOrControl+C', function () {
+      print('save screenshot to clipboard')
+    })
+    // polyfill
+    window.addEventListener('keydown', function (e) {
+      // print(e.keyCode)
+      if (e.keyCode === 32) {
+        this.$store.dispatch('togglePlay')
+      }
+    }.bind(this), true)
+
+    ipcRenderer.on('global-key-event', function (_, message) {
+      if (message === 'toggle-play') {
+        this.$store.dispatch('togglePlay')
+      } else if (message === 'go-previous') {
+        this.$store.dispatch('goPrevious')
+      } else if (message === 'go-next') {
+        this.$store.dispatch('goNext')
+      }
+    }.bind(this))
   }
 }
 </script>
