@@ -20,6 +20,7 @@ const mutations = {
     state.playerReady = isReady
   },
   LOAD_FILES (state, files) {
+    state.order = 0
     state.currentFileList = files
   },
   SET_VOLUME (state, volume) {
@@ -31,10 +32,16 @@ const mutations = {
   STOP (state) {
     state.isPlaying = false
   },
-  GO_BACKWARD (state) { },
-  GO_FORWARD (state) { },
-  GO_PREVIEW (state) { },
-  GO_NEXT (state) { },
+  GO_PREVIOUS (state) {
+    state.order === 0
+      ? state.order = state.currentFileList.length - 1
+      : state.order -= 1
+  },
+  GO_NEXT (state) {
+    state.order === state.currentFileList.length - 1
+      ? state.order = 0
+      : state.order += 1
+  },
   TOGGLE_MUTE (state) {
     state.isMute = !state.isMute
   },
@@ -65,12 +72,18 @@ const actions = {
         const { name, value } = data
         if (name === 'duration') {
           commit('SET_DURATION', value)
+        } else if (name === 'pause') {
+          commit('TOGGLE_PLAY', !value)
+        } else if (name === 'volume') {
+          commit('SET_VOLUME', value)
         } else if (name === 'time-pos' && !state.isSeeking) {
           commit('SET_SEEK', value)
-        } else if (name === 'eof-reached') {
-          commit('TOGGLE_PLAY', false)
-          commit('SET_SEEK', 0)
-          mpv.seek(state.playerNode, 0)
+        } else if (name === 'eof-reached' && state.seek !== 0) {
+          commit('GO_NEXT')
+          mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+          if (state.order !== 0) {
+            mpv.goPlay(state.playerNode, true)
+          }
         } else if (name === 'filename') {
           commit('SET_FILENAME', value)
         } else {
@@ -83,23 +96,21 @@ const actions = {
   },
   loadFiles ({ commit }, files) {
     if (state.playerNode != null && state.playerReady) {
-      mpv.pause(state.playerNode)
+      mpv.goPlay(state.playerNode, false)
       mpv.stop(state.playerNode)
       commit('STOP')
-      mpv.loadFile(state.playerNode, files[0])
       commit('LOAD_FILES', files)
+      mpv.loadFile(state.playerNode, state.currentFileList[state.order])
     }
   },
-  setVolume ({ commit }, volume) {
+  setVolume (_, volume) {
     if (state.playerNode != null && state.playerReady) {
       mpv.setVolume(state.playerNode, volume)
-      commit('SET_VOLUME', parseInt(volume))
     }
   },
-  togglePlay ({ commit }) {
+  togglePlay () {
     if (state.playerNode != null && state.playerReady && state.currentFileList.length) {
-      state.isPlaying ? mpv.pause(state.playerNode) : mpv.play(state.playerNode)
-      commit('TOGGLE_PLAY')
+      mpv.goPlay(state.playerNode, !state.isPlaying)
     }
   },
   stop ({ commit }) {
@@ -114,17 +125,25 @@ const actions = {
   },
   seeking ({ commit }, isSeeking) {
     if (isSeeking) {
-      mpv.pause(state.playerNode)
-    } else if (state.isPlaying) {
-      mpv.play(state.playerNode)
+      mpv.goPlay(state.playerNode, false)
+    } else {
+      mpv.goPlay(state.playerNode, true)
     }
     commit('SET_SEEKING', isSeeking)
   },
-  playPrevious ({ commit }) {
+  goPrevious ({ commit }) {
     commit('GO_PREVIOUS')
+    mpv.loadFile(state.playerNode, state.currentFileList[state.order])
   },
-  playNext ({ commit }) {
+  goNext ({ commit }) {
     commit('GO_NEXT')
+    mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+  },
+  goBackward () {
+    mpv.seek(state.playerNode, -5, true)
+  },
+  goForward () {
+    mpv.seek(state.playerNode, 5, true)
   },
   toggleMute ({ commit }) {
     if (state.playerNode != null) {
@@ -136,14 +155,21 @@ const actions = {
 
 class mpv {
   static playerReady (el) {
-    const observable = ['pause', 'time-pos', 'duration', 'eof-reached', 'filename']
+    const observable = [
+      'pause',
+      'time-pos',
+      'duration',
+      'eof-reached',
+      'filename',
+      'volume'
+    ]
     observable.forEach(v => this._setObserve(el, v))
   }
   static loadFile (el, filePath) {
     this._sendCommand(el, 'loadfile', filePath)
   }
-  static play (el) {
-    this._sendProperty(el, 'pause', false)
+  static goPlay (el, play) {
+    this._sendProperty(el, 'pause', !play)
   }
   static pause (el) {
     this._sendProperty(el, 'pause', true)
@@ -160,8 +186,8 @@ class mpv {
   static unmute (el) {
     this._sendProperty(el, 'mute', false)
   }
-  static seek (el, seconds) {
-    this._sendCommand(el, 'seek', seconds, 'absolute')
+  static seek (el, seconds, relative = false) {
+    this._sendCommand(el, 'seek', seconds.toString(), relative ? 'relative' : 'absolute')
   }
 
   static _sendCommand (el, cmd, ...args) {

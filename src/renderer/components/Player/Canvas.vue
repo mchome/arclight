@@ -36,7 +36,6 @@ export default {
     loadFile () {
       // TODO: delete me
       const files = [require('path').join(__dirname, '../../../../test.mp4')]
-      print(files)
       this.$store.dispatch('loadFiles', files)
     }
   },

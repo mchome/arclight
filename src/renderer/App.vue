@@ -5,8 +5,6 @@
 </template>
 
 <script>
-const Mousetrap = require('mousetrap')
-
 export default {
   computed: {
     displayBorder () {
@@ -14,18 +12,41 @@ export default {
     },
     displayShadow () {
       return !this.$store.state.Window.isFullscreen && !this.$store.state.Window.isMaximize
+    },
+    volume () {
+      return this.$store.state.Player.volume
     }
   },
   mounted () {
-    Mousetrap.bind('enter', function () {
-      this.$store.dispatch('toggleFullscreen')
-    }.bind(this))
-    Mousetrap.bind('space', function () {
-      this.$store.dispatch('togglePlay')
-    }.bind(this))
-    Mousetrap.bind('ctrl+c', function () {
-      print('save screenshot to clipboard')
-    })
+    // this.$electron.remote.get
+
+    // Mousetrap.bind('enter', function () {
+    //   this.$store.dispatch('toggleFullscreen')
+    // }.bind(this))
+    // Mousetrap.bind('space', function () {
+    //   this.$store.dispatch('togglePlay')
+    // }.bind(this))
+    // Mousetrap.bind('ctrl+c', function () {
+    //   print('save screenshot to clipboard')
+    // })
+    // Mousetrap.bind('left', function () {
+    //   this.$store.dispatch('goBackward')
+    // }.bind(this), 'keyup')
+    // Mousetrap.bind('right', function () {
+    //   this.$store.dispatch('goForward')
+    // }.bind(this), 'keyup')
+    // Mousetrap.bind('ctrl+left', function () {
+    //   this.$store.dispatch('goPrevious')
+    // }.bind(this), 'keyup')
+    // Mousetrap.bind('ctrl+right', function () {
+    //   this.$store.dispatch('goNext')
+    // }.bind(this), 'keyup')
+    // Mousetrap.bind('up', function () {
+    //   this.$store.dispatch('setVolume', this.volume + 5)
+    // }.bind(this), 'keyup')
+    // Mousetrap.bind('down', function () {
+    //   this.$store.dispatch('setVolume', this.volume - 5)
+    // }.bind(this), 'keyup')
   }
 }
 </script>

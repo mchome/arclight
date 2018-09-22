@@ -24,10 +24,22 @@
     </div>
 
     <div id="controller-btns">
-      <play-icon v-show="!isPlaying" @click.left.native="togglePlay" @click.right.native="stopPlaying" title="Play/Stop" />
-      <pause-icon v-show="isPlaying" @click.left.native="togglePlay" @click.right.native="stopPlaying" title="Pause/Stop" />
-      <skip-previous-icon @click.native="playPrevious" title="Previous/Backward" />
-      <skip-next-icon @click.native="playNext" title="Next/Forward" />
+      <play-icon v-show="!isPlaying"
+        @click.left.native="togglePlay"
+        @click.right.native="stopPlaying"
+        title="Play/Stop" />
+      <pause-icon v-show="isPlaying"
+        @click.left.native="togglePlay"
+        @click.right.native="stopPlaying"
+        title="Pause/Stop" />
+      <skip-previous-icon
+        @click.left.native="playPrevious"
+        @click.right.native="playBackward"
+        title="Previous/Backward" />
+      <skip-next-icon
+        @click.left.native="playNext"
+        @click.right.native="playForward"
+        title="Next/Forward" />
       <div id="label">
         <p>{{ translateTime(seek) }} / {{ translateTime(duration) }}</p>
       </div>
@@ -108,10 +120,16 @@ export default {
       this.$store.dispatch('stop')
     },
     playPrevious () {
-      print('prv')
+      this.$store.dispatch('goPrevious')
     },
     playNext () {
-      print('next')
+      this.$store.dispatch('goNext')
+    },
+    playBackward () {
+      this.$store.dispatch('goBackward')
+    },
+    playForward () {
+      this.$store.dispatch('goForward')
     },
     seeking (isSeeking) {
       this.$store.dispatch('seeking', isSeeking)
