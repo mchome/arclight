@@ -40,11 +40,14 @@
         @click.left.native="playNext"
         @click.right.native="playForward"
         title="Next/Forward" />
-      <div id="label">
+      <div id="label" class="draggable" v-show="!isFullscreen && !isMaximize">
+        <p>{{ translateTime(seek) }} / {{ translateTime(duration) }}</p>
+      </div>
+      <div id="label" v-show="isFullscreen || isMaximize">
         <p>{{ translateTime(seek) }} / {{ translateTime(duration) }}</p>
       </div>
       <subtitles-icon></subtitles-icon>
-      <playlist-play-icon></playlist-play-icon>
+      <playlist-play-icon @click.native="popupPlaylist"></playlist-play-icon>
     </div>
   </div>
 </template>
@@ -107,6 +110,12 @@ export default {
     },
     duration () {
       return this.$store.state.Player.duration
+    },
+    isFullscreen () {
+      return this.$store.state.Window.isFullscreen
+    },
+    isMaximize () {
+      return this.$store.state.Window.isMaximize
     }
   },
   methods: {
@@ -143,6 +152,9 @@ export default {
       if (s < 10) { s = '0' + s }
 
       return `${h}:${m}:${s}`
+    },
+    popupPlaylist () {
+      this.$electron.ipcRenderer.send('window-popup', 'playlist')
     }
   }
 }

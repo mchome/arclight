@@ -20,10 +20,11 @@ export default {
   mounted () {
     const electronLocalshortcut = require('electron-localshortcut')
     const win = this.$electron.remote.BrowserWindow.getFocusedWindow()
-    const { ipcRenderer } = require('electron')
-
     electronLocalshortcut.register(win, 'P', function () {
       this.$store.dispatch('togglePlay')
+    }.bind(this))
+    electronLocalshortcut.register(win, 'I', function () {
+      this.$store.dispatch('toggleStat')
     }.bind(this))
     electronLocalshortcut.register(win, 'Enter', function () {
       this.$store.dispatch('toggleFullscreen')
@@ -47,25 +48,26 @@ export default {
       this.$store.dispatch('goNext')
     }.bind(this))
     electronLocalshortcut.register(win, 'CommandOrControl+C', function () {
-      print('save screenshot to clipboard')
-    })
+      this.$store.dispatch('getScreenshot')
+    }.bind(this))
+
     // polyfill
     window.addEventListener('keydown', function (e) {
-      // print(e.keyCode)
       if (e.keyCode === 32) {
         this.$store.dispatch('togglePlay')
       }
     }.bind(this), true)
 
+    // global shortcuts
+    const { ipcRenderer } = require('electron')
     ipcRenderer.on('global-key-event', function (_, message) {
       if (message === 'toggle-play') {
         this.$store.dispatch('togglePlay')
-      } else if (message === 'go-previous') {
-        this.$store.dispatch('goPrevious')
-      } else if (message === 'go-next') {
-        this.$store.dispatch('goNext')
       }
     }.bind(this))
+
+    const drag = require('electron-drag')
+    drag('.draggable')
   }
 }
 </script>

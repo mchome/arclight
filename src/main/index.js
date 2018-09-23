@@ -1,23 +1,24 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 const path = require('path')
+const print = console.log
 
-/**
- * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+
+ipcMain.on('window-popup', (_, arg) => {
+  if (arg === 'playlist') {
+    createPlaylistWindow()
+  } else if (arg === 'settings') {
+    createSettingsWindow()
+  } else if (arg === 'context-menu') {
+    createContextMenuWindow()
+  }
+})
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
   mainWindow = new BrowserWindow({
     frame: false,
     transparent: true,
@@ -31,9 +32,9 @@ function createWindow () {
     }
   })
 
-  mainWindow.setPosition(960, 10)
-
-  mainWindow.loadURL(winURL)
+  const winURL = process.env.NODE_ENV === 'development'
+    ? `http://localhost:9080`
+    : `file://${__dirname}/index.html`
 
   globalShortcut.register('MediaPlayPause', () => {
     mainWindow.webContents.send('global-key-event', 'toggle-play')
@@ -45,10 +46,40 @@ function createWindow () {
     mainWindow.webContents.send('global-key-event', 'go-next')
   })
 
+  // for testing
+  mainWindow.setPosition(960, 10)
+
+  mainWindow.loadURL(winURL)
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
+
+function createPlaylistWindow () {
+  const window = new BrowserWindow({
+    frame: false,
+    // transparent: true,
+    width: 400,
+    height: 400,
+    minWidth: 400,
+    minHeight: 400,
+    useContentSize: true
+  })
+
+  const winURL = process.env.NODE_ENV === 'development'
+    ? `http://localhost:9080/#/Playlist`
+    : `file://${__dirname}/index.html#Playlist`
+
+  // for testing
+  window.setPosition(940, 30)
+
+  window.loadURL(winURL)
+}
+
+function createSettingsWindow () {}
+
+function createContextMenuWindow () {}
 
 let pluginPath = path.join(__static, 'mpv.js/mpvjs.node;application/x-mpvjs').split('\\').join('/')
 if (process.env.NODE_ENV === 'production') {
@@ -58,6 +89,12 @@ app.commandLine.appendSwitch('ignore-gpu-blacklist')
 app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 
 app.on('ready', createWindow)
+
+app.on('web-contents-created', (_, contents) => {
+  contents.on('new-window', (_, navigationUrl) => {
+    print(`url: ${navigationUrl}`)
+  })
+})
 
 app.on('window-all-closed', () => {
   globalShortcut.unregisterAll()

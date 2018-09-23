@@ -74,8 +74,7 @@ export default {
     },
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
-    },
-    toggleStat () {}
+    }
   }
 }
 </script>

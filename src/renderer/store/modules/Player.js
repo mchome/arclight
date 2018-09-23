@@ -9,7 +9,8 @@ const state = {
   seek: 0,
   isSeeking: false,
   volume: 100,
-  fileName: ''
+  fileName: '',
+  isDisplayStat: false
 }
 
 const mutations = {
@@ -53,6 +54,9 @@ const mutations = {
   },
   SET_FILENAME (state, fileName) {
     state.fileName = fileName
+  },
+  TOGGLE_STAT (state, isDisplay) {
+    state.isDisplayStat = (isDisplay != null) ? isDisplay : !state.isDisplayStat
   }
 }
 
@@ -75,7 +79,7 @@ const actions = {
           commit('SET_VOLUME', value)
         } else if (name === 'time-pos' && !state.isSeeking) {
           commit('SET_SEEK', value)
-        } else if (name === 'eof-reached' && state.seek !== 0) {
+        } else if (name === 'eof-reached' && value) {
           commit('GO_NEXT')
           mpv.loadFile(state.playerNode, state.currentFileList[state.order])
           if (state.order !== 0) {
@@ -138,16 +142,23 @@ const actions = {
     mpv.loadFile(state.playerNode, state.currentFileList[state.order])
   },
   goBackward () {
-    mpv.seek(state.playerNode, -5, true)
+    mpv.seek(state.playerNode, state.seek - 5)
   },
   goForward () {
-    mpv.seek(state.playerNode, 5, true)
+    mpv.seek(state.playerNode, state.seek + 5)
   },
   toggleMute ({ commit }) {
     if (state.playerNode != null) {
       state.isMute ? mpv.unmute(state.playerNode) : mpv.mute(state.playerNode)
       commit('TOGGLE_MUTE')
     }
+  },
+  getScreenshot () {
+    // mpv.screenshot(state.playerNode, false)
+  },
+  toggleStat ({ commit }) {
+    mpv.stat(state.playerNode)
+    commit('TOGGLE_STAT')
   }
 }
 
@@ -186,6 +197,12 @@ class mpv {
   }
   static seek (el, seconds, relative = false) {
     this._sendCommand(el, 'seek', seconds.toString(), relative ? 'relative' : 'absolute')
+  }
+  static screenshot (el, includeSubtitles = true) {
+    this._sendCommand(el, 'screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')
+  }
+  static stat (el) {
+    this._sendCommand(el, 'keypress', 'I')
   }
 
   static _sendCommand (el, cmd, ...args) {
