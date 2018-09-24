@@ -56,9 +56,9 @@ export default {
       const val = this.$store.state.Window.isFullscreen
       try {
         if (val) {
-          this.$electron.remote.BrowserWindow.getFocusedWindow().setResizable(false)
+          this.$electron.remote.getCurrentWindow().setResizable(false)
         } else {
-          this.$electron.remote.BrowserWindow.getFocusedWindow().setResizable(true)
+          this.$electron.remote.getCurrentWindow().setResizable(true)
         }
       } catch (_) { }
       return val
@@ -67,9 +67,9 @@ export default {
       const val = this.$store.state.Window.isMaximize
       try {
         if (val) {
-          this.$electron.remote.BrowserWindow.getFocusedWindow().setResizable(false)
+          this.$electron.remote.getCurrentWindow().setResizable(false)
         } else {
-          this.$electron.remote.BrowserWindow.getFocusedWindow().setResizable(true)
+          this.$electron.remote.getCurrentWindow().setResizable(true)
         }
       } catch (_) { }
       return val
@@ -86,7 +86,7 @@ export default {
       this.$store.dispatch('toggleMaximize')
     },
     toggleMinimize () {
-      this.$electron.remote.BrowserWindow.getFocusedWindow().minimize()
+      this.$electron.remote.getCurrentWindow().minimize()
     },
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')

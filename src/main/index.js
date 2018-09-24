@@ -1,21 +1,60 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 const path = require('path')
-const print = console.log
+const {
+  createPlaylistWindow,
+  createSettingsWindow,
+  createMetadataWindow,
+  createEffectWindow,
+  createAboutWindow,
+  createContextMenuWindow
+} = require('./window').default
+// const print = console.log
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
+let popupWindow = []
 
 ipcMain.on('window-popup', (_, arg) => {
-  if (arg === 'playlist') {
-    createPlaylistWindow()
-  } else if (arg === 'settings') {
-    createSettingsWindow()
-  } else if (arg === 'context-menu') {
-    createContextMenuWindow()
+  const popuped = popupWindow.filter(i => i.arg === arg)
+  if (popuped.length > 0) {
+    popuped[0].win.close()
+    return
   }
+  if (arg === 'playlist') {
+    const win = createPlaylistWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  } else if (arg === 'settings') {
+    const win = createSettingsWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  } else if (arg === 'metadata') {
+    const win = createMetadataWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  } else if (arg === 'effect') {
+    const win = createEffectWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  } else if (arg === 'about') {
+    const win = createAboutWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  } else if (arg === 'context-menu') {
+    const win = createContextMenuWindow(() => {
+      popupWindow.splice(popupWindow.indexOf(arg), 1)
+    })
+    popupWindow.push({ arg, win })
+  }
+  // print(popupWindow)
 })
 
 function createWindow () {
@@ -56,31 +95,6 @@ function createWindow () {
   })
 }
 
-function createPlaylistWindow () {
-  const window = new BrowserWindow({
-    frame: false,
-    // transparent: true,
-    width: 400,
-    height: 400,
-    minWidth: 400,
-    minHeight: 400,
-    useContentSize: true
-  })
-
-  const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080/#/Playlist`
-    : `file://${__dirname}/index.html#Playlist`
-
-  // for testing
-  window.setPosition(940, 30)
-
-  window.loadURL(winURL)
-}
-
-function createSettingsWindow () {}
-
-function createContextMenuWindow () {}
-
 let pluginPath = path.join(__static, 'mpv.js/mpvjs.node;application/x-mpvjs').split('\\').join('/')
 if (process.env.NODE_ENV === 'production') {
   pluginPath = pluginPath.replace('app.asar', 'app.asar.unpacked')
@@ -89,12 +103,6 @@ app.commandLine.appendSwitch('ignore-gpu-blacklist')
 app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 
 app.on('ready', createWindow)
-
-app.on('web-contents-created', (_, contents) => {
-  contents.on('new-window', (_, navigationUrl) => {
-    print(`url: ${navigationUrl}`)
-  })
-})
 
 app.on('window-all-closed', () => {
   globalShortcut.unregisterAll()

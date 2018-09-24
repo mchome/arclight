@@ -16,8 +16,7 @@
     "pack": "npm run pack:main && npm run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": "npm run lint:fix",
-    "fix_electron_drag": "electron-rebuild -f -w win-mouse"
+    "postinstall": "npm run lint:fix"
   },
   "build": {
     "productName": "arclight",
@@ -68,7 +67,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "electron-drag": "^1.2.2",
     "electron-localshortcut": "^3.1.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
@@ -97,7 +95,6 @@
     "electron-builder": "^20.19.2",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
-    "electron-rebuild": "^1.8.2",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^4.0.1",

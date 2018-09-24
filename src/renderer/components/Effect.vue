@@ -1,23 +1,17 @@
 <template>
-  <div id="playlist">
-    <titlebar></titlebar>
+  <div id="effect">
+    effect
   </div>
 </template>
 
 <script>
-import Titlebar from './Common/Titlebar'
-
 export default {
-  components: {
-    Titlebar
-  },
-  computed: {
-  }
+
 }
 </script>
 
 <style>
-#playlist {
+#effect {
   height: 100%;
   flex: 1;
   display: flex;

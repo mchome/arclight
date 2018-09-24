@@ -65,9 +65,6 @@ export default {
         this.$store.dispatch('togglePlay')
       }
     }.bind(this))
-
-    const drag = require('electron-drag')
-    drag('.draggable')
   }
 }
 </script>
@@ -102,5 +99,9 @@ body {
   margin: 6px;
   height: calc(100% - 16px) !important;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.draggable {
+  -webkit-app-region: drag
 }
 </style>

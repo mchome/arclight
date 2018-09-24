@@ -6,7 +6,7 @@
 
 ``` bash
 # install dependencies
-npm install && npm run fix_electron_drag
+npm install
 
 # serve with hot reload at localhost:9080
 npm run dev

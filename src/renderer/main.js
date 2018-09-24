@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import axios from 'axios'
+import { VueHammer } from 'vue2-hammer'
 
 import App from './App'
 import router from './router'
 import store from './store'
 
-import { VueHammer } from 'vue2-hammer'
 Vue.use(VueHammer)
 VueHammer.config.press = {
   threshold: 2000
