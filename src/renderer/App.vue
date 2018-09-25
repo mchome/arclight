@@ -63,6 +63,10 @@ export default {
     ipcRenderer.on('global-key-event', function (_, message) {
       if (message === 'toggle-play') {
         this.$store.dispatch('togglePlay')
+      } else if (message === 'go-previous') {
+        this.$store.dispatch('goPrevious')
+      } else if (message === 'go-next') {
+        this.$store.dispatch('goNext')
       }
     }.bind(this))
   }
@@ -70,11 +74,22 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: 'NatoSansCJK';
+  src: url("~@/assets/fonts/NotoSansCJKsc-Regular.otf")  format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "NatoSansCJK";
+  src: url("~@/assets/fonts/NotoSansCJKsc-Light.otf")  format("truetype");
+  font-weight: lighter;
+}
+
 * {
   margin: 0;
   padding: 0;
   font-family: Roboto, Lato, Helvetica, "Monaco", "Avenir", "Segoe UI",
-    "Microsoft YaHei", Arial, sans-serif;
+    "Microsoft YaHei", "NatoSansCJK", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   cursor: default;

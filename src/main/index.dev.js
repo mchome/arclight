@@ -24,3 +24,6 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 
 // Require `main` process to boot app
 require('./index')
+
+const { build } = require('../../package.json')
+require('electron').app.setName(build.productName)

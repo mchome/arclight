@@ -1,7 +1,7 @@
 <template>
   <div id="titlebar">
     <div id="title" @dblclick="toggleFullscreen">
-      <p>Arclight</p>
+      <p>{{ title }}</p>
     </div>
 
     <div id="media-title" class="draggable" v-show="!isFullscreen && !isMaximize">
@@ -52,6 +52,9 @@ export default {
     WindowCloseIcon
   },
   computed: {
+    title () {
+      return this.$electron.remote.app.getName()
+    },
     isFullscreen () {
       const val = this.$store.state.Window.isFullscreen
       try {
@@ -124,6 +127,7 @@ export default {
   display: flex;
   font-weight: lighter;
   align-items: center;
+  text-transform: capitalize;
 }
 
 #media-title {

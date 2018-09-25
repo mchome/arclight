@@ -1,11 +1,7 @@
 <template>
   <div id="titlebar">
-    <div id="title">
-      <p>Arclight</p>
-    </div>
-
-    <div id="media-title" class="draggable">
-      <p>{{ fileName }}</p>
+    <div id="title" class="draggable">
+      <slot name="title"></slot>
     </div>
 
     <div id="command-btns">
@@ -80,20 +76,8 @@ export default {
   display: flex;
   font-weight: lighter;
   align-items: center;
-}
-
-#media-title {
-  flex: 1;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  font-weight: lighter;
-  overflow: hidden;
-  white-space: nowrap;
-  letter-spacing: 0.7px;
+  flex: 1;
 }
 
 #command-btns {

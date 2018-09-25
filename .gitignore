@@ -11,4 +11,4 @@ thumbs.db
 package-lock.json
 
 *.mp4
-static/*
+static/mpv.js/*

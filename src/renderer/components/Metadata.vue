@@ -1,12 +1,22 @@
 <template>
   <div id="metadata">
-    meta
+    <titlebar>
+      <p slot="title">Metadata</p>
+    </titlebar>
   </div>
 </template>
 
 <script>
-export default {
+import Titlebar from './Common/Titlebar'
 
+export default {
+  components: {
+    Titlebar
+  },
+  computed: {
+  },
+  methods: {
+  }
 }
 </script>
 

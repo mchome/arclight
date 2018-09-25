@@ -1,6 +1,8 @@
 <template>
   <div id="playlist">
-    <titlebar></titlebar>
+    <titlebar>
+      <p slot="title">Playlist</p>
+    </titlebar>
   </div>
 </template>
 

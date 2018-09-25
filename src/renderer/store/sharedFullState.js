@@ -1,8 +1,7 @@
 export const sharedFullState = store => {
-  /* eslint-disable no-unused-vars */
   let currentState = null
   window.localStorage.setItem('init-state', false)
-  store.subscribe((_, state) => {
+  store.subscribe((mutation, state) => {
     currentState = state
   })
   window.addEventListener('storage', (e) => {

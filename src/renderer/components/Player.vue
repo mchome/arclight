@@ -75,6 +75,15 @@ export default {
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
     }
+  },
+  mounted () {
+    // receive some mutations: { type, payload }
+    window.addEventListener('storage', function (e) {
+      if (e.key === 'popup-window-mutation' && e.newValue) {
+        const { type, payload } = JSON.parse(e.newValue)
+        this.$store.commit(type, payload)
+      }
+    }.bind(this))
   }
 }
 </script>
