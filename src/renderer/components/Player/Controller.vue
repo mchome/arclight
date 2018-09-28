@@ -154,7 +154,7 @@ export default {
       return `${h}:${m}:${s}`
     },
     popupPlaylist () {
-      this.$electron.ipcRenderer.send('window-popup', 'playlist')
+      this.$electron.ipcRenderer.send('window-popup', 'metadata')
     }
   }
 }

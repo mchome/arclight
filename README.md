@@ -1,8 +1,13 @@
 # arclight
 
-> A video player (WIP)
+> A video player(WIP) based on mpv.js(libmpv).
 
-## Build Setup (outdate)
+## Build Setup
+
+1) grab `mpvjs.node` from https://github.com/Kagami/mpv.js/releases
+2) grab `mpv-1.dll` from libmpv
+3) drop `mpvjs.node` and `mpv-1.dll` to `static/mpv.js/` folder
+4) build it
 
 ``` bash
 # install dependencies

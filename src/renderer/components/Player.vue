@@ -3,7 +3,7 @@
     <titlebar
       :class="{
         hide: hideTitleBar,
-        'half-show': isFullscreen || osdMode
+        'transparent-show': isFullscreen || osdMode
       }"
       @mouseover.native="isHoverUpper = true"
       @mouseout.native="isHoverUpper = false" />
@@ -12,7 +12,7 @@
     <player-controller
       :class="{
         hide: hideController,
-        'half-show': isFullscreen || osdMode
+        'transparent-show': isFullscreen || osdMode
       }"
       @mouseover.native="isHoverLower = true"
       @mouseout.native="isHoverLower = false" />
@@ -56,6 +56,8 @@ export default {
     loadFile (e) {
       e.preventDefault()
       let files = []
+      const urls = e.dataTransfer.getData('text')
+
       for (let file of e.dataTransfer.files) {
         if (fs.statSync(file.path).isFile()) {
           files.push(file.path)
@@ -67,7 +69,12 @@ export default {
           })
         }
       }
-      this.$store.dispatch('loadFiles', files)
+      if (urls.length) {
+        files = files.concat(urls.split(/\r?\n/))
+      }
+      if (files.length) {
+        this.$store.dispatch('loadFiles', files)
+      }
     },
     togglePlay () {
       this.$store.dispatch('togglePlay')
@@ -100,7 +107,7 @@ export default {
   flex: 1;
   z-index: 10;
 }
-.half-show {
+.transparent-show {
   opacity: 0.75 !important;
 }
 .hide {

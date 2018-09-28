@@ -76,15 +76,17 @@ const actions = {
         if (name === 'duration') {
           commit('SET_DURATION', value)
         } else if (name === 'pause') {
-          commit('TOGGLE_PLAY', !value)
+          if (!state.isSeeking) {
+            commit('TOGGLE_PLAY', !value)
+          }
         } else if (name === 'volume') {
           commit('SET_VOLUME', value)
-        } else if (name === 'time-pos' && !state.isSeeking) {
-          commit('SET_SEEK', value)
-        } else if (name === 'eof-reached' && value) {
-          commit('GO_NEXT')
-          mpv.loadFile(state.playerNode, state.currentFileList[state.order])
-          if (state.order !== 0) {
+        } else if (name === 'time-pos') {
+          if (!state.isSeeking) commit('SET_SEEK', value)
+        } else if (name === 'eof-reached') {
+          if (value && state.order !== state.currentFileList.length - 1) {
+            commit('GO_NEXT')
+            mpv.loadFile(state.playerNode, state.currentFileList[state.order])
             mpv.goPlay(state.playerNode, true)
           }
         } else if (name === 'filename') {
@@ -112,7 +114,13 @@ const actions = {
     }
   },
   togglePlay () {
-    if (state.playerNode != null && state.playerReady && state.currentFileList.length) {
+    if (state.playerNode != null &&
+      state.playerReady &&
+      state.currentFileList.length) {
+      if (state.order === state.currentFileList.length - 1 &&
+        Math.floor(state.seek) === Math.floor(state.duration)) {
+        mpv.seek(state.playerNode, 0)
+      }
       mpv.goPlay(state.playerNode, !state.isPlaying)
     }
   },
@@ -128,7 +136,7 @@ const actions = {
     mpv.seek(state.playerNode, seconds)
   },
   seeking ({ commit }, isSeeking) {
-    if (isSeeking) {
+    if (isSeeking || !state.isPlaying) {
       mpv.goPlay(state.playerNode, false)
     } else {
       mpv.goPlay(state.playerNode, true)
@@ -144,7 +152,9 @@ const actions = {
     mpv.loadFile(state.playerNode, state.currentFileList[state.order])
   },
   goBackward () {
-    mpv.seek(state.playerNode, state.seek - 5)
+    let seconds = state.seek - 5
+    if (seconds < 0) seconds = 0
+    mpv.seek(state.playerNode, seconds)
   },
   goForward () {
     mpv.seek(state.playerNode, state.seek + 5)

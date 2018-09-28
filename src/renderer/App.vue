@@ -19,7 +19,8 @@ export default {
   },
   mounted () {
     const electronLocalshortcut = require('electron-localshortcut')
-    const win = this.$electron.remote.BrowserWindow.getFocusedWindow()
+    const win = this.$electron.remote.getCurrentWindow()
+
     electronLocalshortcut.register(win, 'P', function () {
       this.$store.dispatch('togglePlay')
     }.bind(this))
@@ -75,12 +76,12 @@ export default {
 
 <style>
 @font-face {
-  font-family: 'NatoSansCJK';
+  font-family: 'NotoSansCJK';
   src: url("~@/assets/fonts/NotoSansCJKsc-Regular.otf")  format("truetype");
   font-weight: normal;
 }
 @font-face {
-  font-family: "NatoSansCJK";
+  font-family: "NotoSansCJK";
   src: url("~@/assets/fonts/NotoSansCJKsc-Light.otf")  format("truetype");
   font-weight: lighter;
 }
@@ -89,7 +90,7 @@ export default {
   margin: 0;
   padding: 0;
   font-family: Roboto, Lato, Helvetica, "Monaco", "Avenir", "Segoe UI",
-    "Microsoft YaHei", "NatoSansCJK", Arial, sans-serif;
+    "Microsoft YaHei", "NotoSansCJK", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   cursor: default;

@@ -16,9 +16,6 @@ export default class mpv {
   static goPlay (el, play) {
     this._sendProperty(el, 'pause', !play)
   }
-  static pause (el) {
-    this._sendProperty(el, 'pause', true)
-  }
   static stop (el) {
     this._sendCommand(el, 'stop')
   }

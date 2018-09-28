@@ -9,6 +9,8 @@
 <script>
 import Titlebar from './Common/Titlebar'
 
+import getInfo from '../mediainfo'
+
 export default {
   components: {
     Titlebar
@@ -16,6 +18,9 @@ export default {
   computed: {
   },
   methods: {
+  },
+  mounted () {
+    getInfo('')
   }
 }
 </script>
