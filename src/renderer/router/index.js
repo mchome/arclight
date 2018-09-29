@@ -11,29 +11,36 @@ export default new Router({
       component: require('@/components/Player').default
     },
     {
-      path: '/playlist/:winid',
-      name: 'playlist',
-      component: require('@/components/Playlist').default
-    },
-    {
-      path: '/settings/:winid',
-      name: 'settings',
-      component: require('@/components/Playlist').default
-    },
-    {
-      path: '/metadata/:winid',
-      name: 'metadata',
-      component: require('@/components/Metadata').default
-    },
-    {
-      path: '/effect/:winid',
-      name: 'effect',
-      component: require('@/components/Effect').default
-    },
-    {
-      path: '/about/:winid',
-      name: 'about',
-      component: require('@/components/About').default
+      path: '/panel',
+      name: 'side-panel',
+      component: require('@/components/SidePanel').default,
+      children: [
+        {
+          path: 'playlist/:winid',
+          name: 'playlist',
+          component: require('@/components/SidePanel/Playlist').default
+        },
+        {
+          path: 'settings/:winid',
+          name: 'settings',
+          component: require('@/components/SidePanel/Playlist').default
+        },
+        {
+          path: 'metadata/:winid',
+          name: 'metadata',
+          component: require('@/components/SidePanel/Metadata').default
+        },
+        {
+          path: 'effect/:winid',
+          name: 'effect',
+          component: require('@/components/SidePanel/Effect').default
+        },
+        {
+          path: 'about/:winid',
+          name: 'about',
+          component: require('@/components/SidePanel/About').default
+        }
+      ]
     },
     {
       path: '/context-menu/:winid',

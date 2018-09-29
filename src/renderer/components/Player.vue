@@ -84,11 +84,11 @@ export default {
     }
   },
   mounted () {
-    // receive some mutations: { type, payload }
+    // receive some dispatches: { action, payload }
     window.addEventListener('storage', function (e) {
-      if (e.key === 'popup-window-mutation' && e.newValue) {
-        const { type, payload } = JSON.parse(e.newValue)
-        this.$store.commit(type, payload)
+      if (e.key === 'popup-window-dispatch' && e.newValue) {
+        const { action, payload } = JSON.parse(e.newValue)
+        this.$store.dispatch(action, payload)
       }
     }.bind(this))
   }

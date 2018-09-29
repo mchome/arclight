@@ -17,14 +17,6 @@ export default {
   components: {
     WindowCloseIcon
   },
-  computed: {
-    fileName () {
-      return this.$store.state.Player.fileName
-    },
-    winid () {
-      return parseInt(this.$route.params.winid)
-    }
-  },
   methods: {
     togglePin () {
       this.$store.dispatch('togglePin')

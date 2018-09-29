@@ -1,28 +1,31 @@
 <template>
   <div id="playlist">
-    <titlebar>
-      <p slot="title">Playlist</p>
-    </titlebar>
+    <div id="filelist"></div>
   </div>
 </template>
 
 <script>
-import Titlebar from './Common/Titlebar'
-
 export default {
-  components: {
-    Titlebar
-  },
   computed: {
+    fileList: {
+      get () {
+        return this.$store.state.Player.fileList
+      }
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 #playlist {
   height: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+#filelist {
+  flex: 1;
+  background-color: aliceblue;
 }
 </style>

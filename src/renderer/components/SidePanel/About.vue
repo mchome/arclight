@@ -1,8 +1,5 @@
 <template>
   <div id="about">
-    <titlebar>
-      <p slot="title">About</p>
-    </titlebar>
     <div id="about-container">
       <div id="logo"></div>
       <div id="info">
@@ -21,12 +18,7 @@
 </template>
 
 <script>
-import Titlebar from './Common/Titlebar'
-
 export default {
-  components: {
-    Titlebar
-  },
   computed: {
     softwareName () {
       return this.$electron.remote.app.getName()
@@ -56,7 +48,7 @@ export default {
 #logo {
   width: 70%;
   flex: 1;
-  background-image: url(../assets/logo.png);
+  background-image: url(../../assets/logo.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

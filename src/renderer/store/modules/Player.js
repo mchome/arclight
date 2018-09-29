@@ -4,7 +4,7 @@ const state = {
   playerNode: null,
   playerReady: false,
   order: 0,
-  currentFileList: [],
+  fileList: [],
   isPlaying: false,
   isMute: false,
   duration: 0,
@@ -24,7 +24,7 @@ const mutations = {
   },
   LOAD_FILES (state, files) {
     state.order = 0
-    state.currentFileList = files
+    state.fileList = files
   },
   SET_VOLUME (state, volume) {
     state.volume = volume
@@ -34,11 +34,11 @@ const mutations = {
   },
   GO_PREVIOUS (state) {
     state.order === 0
-      ? state.order = state.currentFileList.length - 1
+      ? state.order = state.fileList.length - 1
       : state.order -= 1
   },
   GO_NEXT (state) {
-    state.order === state.currentFileList.length - 1
+    state.order === state.fileList.length - 1
       ? state.order = 0
       : state.order += 1
   },
@@ -84,9 +84,9 @@ const actions = {
         } else if (name === 'time-pos') {
           if (!state.isSeeking) commit('SET_SEEK', value)
         } else if (name === 'eof-reached') {
-          if (value && state.order !== state.currentFileList.length - 1) {
+          if (value && state.order !== state.fileList.length - 1) {
             commit('GO_NEXT')
-            mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+            mpv.loadFile(state.playerNode, state.fileList[state.order])
             mpv.goPlay(state.playerNode, true)
           }
         } else if (name === 'filename') {
@@ -105,7 +105,7 @@ const actions = {
       mpv.stop(state.playerNode)
       commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
-      mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+      mpv.loadFile(state.playerNode, state.fileList[state.order])
     }
   },
   setVolume (_, volume) {
@@ -116,8 +116,8 @@ const actions = {
   togglePlay () {
     if (state.playerNode != null &&
       state.playerReady &&
-      state.currentFileList.length) {
-      if (state.order === state.currentFileList.length - 1 &&
+      state.fileList.length) {
+      if (state.order === state.fileList.length - 1 &&
         Math.floor(state.seek) === Math.floor(state.duration)) {
         mpv.seek(state.playerNode, 0)
       }
@@ -145,11 +145,11 @@ const actions = {
   },
   goPrevious ({ commit }) {
     commit('GO_PREVIOUS')
-    mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+    mpv.loadFile(state.playerNode, state.fileList[state.order])
   },
   goNext ({ commit }) {
     commit('GO_NEXT')
-    mpv.loadFile(state.playerNode, state.currentFileList[state.order])
+    mpv.loadFile(state.playerNode, state.fileList[state.order])
   },
   goBackward () {
     let seconds = state.seek - 5
