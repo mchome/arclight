@@ -1,6 +1,8 @@
 <template>
   <div id="playlist">
-    <div id="filelist"></div>
+    playlist
+    <div id="filelist">
+    </div>
   </div>
 </template>
 
@@ -19,13 +21,11 @@ export default {
 <style scoped>
 #playlist {
   height: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 #filelist {
   flex: 1;
-  background-color: aliceblue;
 }
 </style>

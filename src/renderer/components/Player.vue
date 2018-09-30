@@ -7,7 +7,11 @@
       }"
       @mouseover.native="isHoverUpper = true"
       @mouseout.native="isHoverUpper = false" />
-    <div id="mask-controller" v-hammer:tap="togglePlay"></div>
+    <div id="mask-controller"
+      @click="togglePlay"
+      @mousemove="hideCursor"
+      :class="{ 'hide-cursor': isHideCursor }">
+    </div>
     <player-canvas></player-canvas>
     <player-controller
       :class="{
@@ -35,10 +39,15 @@ export default {
   data () {
     return {
       isHoverUpper: false,
-      isHoverLower: false
+      isHoverLower: false,
+      isHideCursor: false,
+      hideCursorTimeout: null
     }
   },
   computed: {
+    isPlaying () {
+      return this.$store.state.Player.isPlaying
+    },
     isFullscreen () {
       return this.$store.state.Window.isFullscreen
     },
@@ -52,6 +61,26 @@ export default {
       return (this.isFullscreen || this.osdMode) && !this.isHoverLower
     }
   },
+  // watch: {
+  //   isPlaying: function (val) {
+  //     if (this.isFullscreen && val) {
+  //       this.isHideCursor = false
+  //       clearTimeout(this.hideCursorTimeout)
+  //       this.hideCursorTimeout = setTimeout(function () {
+  //         this.isHideCursor = true
+  //       }.bind(this), 1500)
+  //     } else if (this.isHideCursor) {
+  //       this.isHideCursor = false
+  //       clearTimeout(this.hideCursorTimeout)
+  //     }
+  //   },
+  //   isFullscreen: function (val) {
+  //     if (!this.isFullscreen && this.isHideCursor) {
+  //       this.isHideCursor = false
+  //       clearTimeout(this.hideCursorTimeout)
+  //     }
+  //   }
+  // },
   methods: {
     loadFile (e) {
       e.preventDefault()
@@ -81,10 +110,19 @@ export default {
     },
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
+    },
+    hideCursor () {
+      // if (this.isFullscreen && this.isPlaying) {
+      //   this.isHideCursor = false
+      //   clearTimeout(this.hideCursorTimeout)
+      //   this.hideCursorTimeout = setTimeout(function () {
+      //     this.isHideCursor = true
+      //   }.bind(this), 1500)
+      // }
     }
   },
   mounted () {
-    // receive some dispatches: { action, payload }
+    /// receive some dispatches: { action, payload }
     window.addEventListener('storage', function (e) {
       if (e.key === 'popup-window-dispatch' && e.newValue) {
         const { action, payload } = JSON.parse(e.newValue)
@@ -95,7 +133,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #player {
   height: 100%;
   flex: 1;
@@ -112,5 +150,9 @@ export default {
 }
 .hide {
   opacity: 0.0 !important;
+}
+
+.hide-cursor {
+  cursor: none;
 }
 </style>

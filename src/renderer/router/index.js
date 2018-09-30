@@ -11,32 +11,37 @@ export default new Router({
       component: require('@/components/Player').default
     },
     {
-      path: '/panel',
-      name: 'side-panel',
+      path: '/panel/:winid',
       component: require('@/components/SidePanel').default,
       children: [
         {
-          path: 'playlist/:winid',
+          path: '',
+          redirect: {
+            name: 'playlist'
+          }
+        },
+        {
+          path: 'playlist',
           name: 'playlist',
           component: require('@/components/SidePanel/Playlist').default
         },
         {
-          path: 'settings/:winid',
-          name: 'settings',
-          component: require('@/components/SidePanel/Playlist').default
-        },
-        {
-          path: 'metadata/:winid',
+          path: 'metadata',
           name: 'metadata',
           component: require('@/components/SidePanel/Metadata').default
         },
         {
-          path: 'effect/:winid',
+          path: 'effect',
           name: 'effect',
           component: require('@/components/SidePanel/Effect').default
         },
         {
-          path: 'about/:winid',
+          path: 'settings',
+          name: 'settings',
+          component: require('@/components/SidePanel/Settings').default
+        },
+        {
+          path: 'about',
           name: 'about',
           component: require('@/components/SidePanel/About').default
         }

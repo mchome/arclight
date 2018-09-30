@@ -104,7 +104,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #titlebar {
   height: 2rem;
   background-color: #1d1d1d;
@@ -158,7 +158,7 @@ export default {
 #command-btns > span:hover {
   background-color: #363736;
 }
-#command-btns svg {
+#command-btns >>> svg {
   width: 100%;
   height: 100%;
   padding: 0.55rem;

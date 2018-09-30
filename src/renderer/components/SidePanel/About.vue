@@ -1,17 +1,15 @@
 <template>
   <div id="about">
-    <div id="about-container">
-      <div id="logo"></div>
-      <div id="info">
-        <div id="software-info">
-          <p>{{ softwareVersion }}</p>
-        </div>
-        <div id="author-info">
-          <p>fuyumi</p>
-        </div>
-        <div id="license-info">
-          <p>GPL v3</p>
-        </div>
+    <div id="logo"></div>
+    <div id="info">
+      <div id="software-info">
+        <p>{{ softwareVersion }}</p>
+      </div>
+      <div id="author-info">
+        <p>fuyumi</p>
+      </div>
+      <div id="license-info">
+        <p>GPL v3</p>
       </div>
     </div>
   </div>
@@ -33,14 +31,6 @@ export default {
 <style scoped>
 #about {
   height: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-#about-container {
-  flex: 1;
-  background-color: #0f0f0f;
   display: flex;
   flex-direction: column;
 }
@@ -61,7 +51,6 @@ export default {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  color: #e2e2e2;
   height: 5rem;
   font-size: 0.9rem;
   letter-spacing: 0.03rem;

@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #player-canvas {
   display: flex;
   position: absolute;

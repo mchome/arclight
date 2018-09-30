@@ -9,6 +9,7 @@ export default class mpv {
       'volume'
     ]
     observable.forEach(v => this._setObserve(el, v))
+    this._sendProperty(el, 'hwdec', 'auto')
   }
   static loadFile (el, filePath) {
     this._sendCommand(el, 'loadfile', filePath)
@@ -30,6 +31,9 @@ export default class mpv {
   }
   static seek (el, seconds, relative = false) {
     this._sendCommand(el, 'seek', seconds.toString(), relative ? 'relative' : 'absolute')
+  }
+  static setTimePos (el, seconds) {
+    this._sendProperty(el, 'time-pos', seconds.toString())
   }
   static screenshot (el, includeSubtitles = true) {
     this._sendCommand(el, 'screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')

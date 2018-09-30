@@ -1,11 +1,7 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 const path = require('path')
 const {
-  createPlaylistWindow,
-  createSettingsWindow,
-  createMetadataWindow,
-  createEffectWindow,
-  createAboutWindow,
+  createSidePanelWindow,
   createContextMenuWindow
 } = require('./window').default
 // const print = console.log
@@ -23,28 +19,9 @@ ipcMain.on('window-popup', (_, arg) => {
     popuped[0].win.close()
     return
   }
-  if (arg === 'playlist') {
-    const win = createPlaylistWindow(() => {
-      popupWindow.splice(popupWindow.indexOf(arg), 1)
-    })
-    popupWindow.push({ arg, win })
-  } else if (arg === 'settings') {
-    const win = createSettingsWindow(() => {
-      popupWindow.splice(popupWindow.indexOf(arg), 1)
-    })
-    popupWindow.push({ arg, win })
-  } else if (arg === 'metadata') {
-    const win = createMetadataWindow(() => {
-      popupWindow.splice(popupWindow.indexOf(arg), 1)
-    })
-    popupWindow.push({ arg, win })
-  } else if (arg === 'effect') {
-    const win = createEffectWindow(() => {
-      popupWindow.splice(popupWindow.indexOf(arg), 1)
-    })
-    popupWindow.push({ arg, win })
-  } else if (arg === 'about') {
-    const win = createAboutWindow(() => {
+
+  if (arg === 'side-panel') {
+    const win = createSidePanelWindow(() => {
       popupWindow.splice(popupWindow.indexOf(arg), 1)
     })
     popupWindow.push({ arg, win })
@@ -54,7 +31,6 @@ ipcMain.on('window-popup', (_, arg) => {
     })
     popupWindow.push({ arg, win })
   }
-  // print(popupWindow)
 })
 
 function createWindow () {

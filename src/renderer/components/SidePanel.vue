@@ -1,9 +1,13 @@
 <template>
   <div id="side-panel">
     <titlebar>
-      <p slot="title">Side Panel</p>
+      <p slot="title">{{ panelName }}</p>
     </titlebar>
-    <router-view></router-view>
+    <dir id="panel">
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
+    </dir>
   </div>
 </template>
 
@@ -17,6 +21,9 @@ export default {
   computed: {
     winid () {
       return parseInt(this.$route.params.winid)
+    },
+    panelName () {
+      return this.$route.name
     }
   }
 }
@@ -28,9 +35,21 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 #panel {
   flex: 1;
+  background-color: #0f0f0f;
+  color: #e2e2e2;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

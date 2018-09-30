@@ -19,7 +19,7 @@ export default {
   },
   mounted () {
     const electronLocalshortcut = require('electron-localshortcut')
-    const win = this.$electron.remote.getCurrentWindow()
+    const win = this.$electron.remote.BrowserWindow.fromId(1)
 
     electronLocalshortcut.register(win, 'P', function () {
       this.$store.dispatch('togglePlay')
@@ -114,7 +114,8 @@ body {
 .shadow {
   margin: 6px;
   height: calc(100% - 16px) !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16),
+              0 3px 6px rgba(0,0,0,0.23);
 }
 
 .draggable {

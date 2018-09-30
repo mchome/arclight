@@ -46,8 +46,8 @@
       <div id="label" v-show="isFullscreen || isMaximize">
         <p>{{ translateTime(seek) }} / {{ translateTime(duration) }}</p>
       </div>
-      <subtitles-icon></subtitles-icon>
-      <playlist-play-icon @click.native="popupPlaylist"></playlist-play-icon>
+      <subtitles-icon title="Select subtitles"></subtitles-icon>
+      <watermark-icon @click.native="popupSidePanel" title="Side Panel"></watermark-icon>
     </div>
   </div>
 </template>
@@ -60,7 +60,7 @@ import PauseIcon from 'icons/Pause'
 import SkipNextIcon from 'icons/SkipNext'
 import SkipPreviousIcon from 'icons/SkipPrevious'
 import SubtitlesIcon from 'icons/Subtitles'
-import PlaylistPlayIcon from 'icons/PlaylistPlay'
+import WatermarkIcon from 'icons/Watermark'
 
 export default {
   components: {
@@ -71,7 +71,7 @@ export default {
     SkipNextIcon,
     SkipPreviousIcon,
     SubtitlesIcon,
-    PlaylistPlayIcon
+    WatermarkIcon
   },
   watch: {
     seek () {
@@ -153,14 +153,14 @@ export default {
 
       return `${h}:${m}:${s}`
     },
-    popupPlaylist () {
-      this.$electron.ipcRenderer.send('window-popup', 'playlist')
+    popupSidePanel () {
+      this.$electron.ipcRenderer.send('window-popup', 'side-panel')
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 #controller {
   height: 4rem;
   background-color: #1d1d1d;
@@ -201,7 +201,7 @@ export default {
 #controller-btns > span:last-child {
   border: none !important;
 }
-#controller-btns svg {
+#controller-btns >>> svg {
   width: 100%;
   padding: 0.5rem 1rem;
 }
@@ -211,7 +211,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-#controller-slider svg {
+#controller-slider >>> svg {
   transform: scale(0.6);
 }
 
@@ -249,10 +249,10 @@ export default {
   border-radius: 3px;
 }
 #progress-bar::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, #e0e000 var(--percent),#000000 var(--percent));
+  background: linear-gradient(to right, #a7eb21 var(--percent),#000000 var(--percent));
 }
 #volume-bar::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, #e0e000 var(--percent),#000000 var(--percent));
+  background: linear-gradient(to right, #a7eb21 var(--percent),#000000 var(--percent));
 }
 
 #label {

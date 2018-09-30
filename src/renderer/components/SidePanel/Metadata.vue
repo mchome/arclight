@@ -1,18 +1,14 @@
 <template>
   <div id="metadata">
+    metadata
   </div>
 </template>
 
 <script>
-import getInfo from '../../mediainfo'
-
 export default {
   computed: {
   },
   methods: {
-  },
-  mounted () {
-    getInfo('')
   }
 }
 </script>
@@ -20,7 +16,6 @@ export default {
 <style>
 #metadata {
   height: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
 }

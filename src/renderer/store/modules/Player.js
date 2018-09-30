@@ -106,6 +106,7 @@ const actions = {
       commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
       mpv.loadFile(state.playerNode, state.fileList[state.order])
+      // mpv.goPlay(state.playerNode, true)
     }
   },
   setVolume (_, volume) {
