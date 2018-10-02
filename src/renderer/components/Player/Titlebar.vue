@@ -83,7 +83,7 @@ export default {
     fileName () {
       const order = `(${this.$store.state.Player.order + 1}/${this.$store.state.Player.fileList.length})`
       return this.$store.state.Player.fileList.length
-        ? `(${order} ${this.$store.state.Player.fileName}`
+        ? `${order} ${this.$store.state.Player.fileName}`
         : this.$store.state.Player.fileName
     }
   },

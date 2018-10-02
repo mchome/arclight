@@ -1,6 +1,7 @@
 const state = {
   osdMode: false,
-  appFont: ''
+  appFont: '',
+  internalTheme: ''
 }
 
 const mutations = {
