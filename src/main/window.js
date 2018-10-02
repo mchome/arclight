@@ -3,7 +3,7 @@ import { BrowserWindow } from 'electron'
 function createSidePanelWindow (onClosed) {
   const window = new BrowserWindow({
     frame: false,
-    transparent: true,
+    // transparent: true,
     width: 300,
     height: 400,
     minWidth: 250,

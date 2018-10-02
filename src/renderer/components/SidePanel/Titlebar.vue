@@ -11,7 +11,7 @@
       <window-close-icon @click.native="close" title="Close" />
     </div>
 
-    <div id="drawer" v-show="isOpenDrawer" @click="toggleDrawer">
+    <div id="drawer" :class="{ 'drawer-with-custom-shadow': isCustomWindowShadow }" v-show="isOpenDrawer" @click="toggleDrawer">
       <div id="drawer-items">
         <router-link tag="div" :to="{ name: 'playlist' }">
           <playlist-play-icon />
@@ -63,6 +63,11 @@ export default {
       isOpenDrawer: false
     }
   },
+  computed: {
+    isCustomWindowShadow () {
+      return this.$store.state.Window.isCustomWindowShadow
+    }
+  },
   methods: {
     toggleDrawer () {
       this.isOpenDrawer = !this.isOpenDrawer
@@ -93,6 +98,7 @@ export default {
 
 <style scoped>
 #titlebar {
+  min-height: 2rem;
   height: 2rem;
   background-color: #1d1d1d;
   display: flex;
@@ -144,12 +150,17 @@ export default {
 
 #drawer {
   position: fixed;
-  top: calc(9px + 2rem);
+  top: 2rem;
   z-index: 100;
-  width: calc(100% - 16px);
-  height: calc(100% - 17px - 2rem);
+  width: calc(100% - 4px);
+  height: calc(100% - 2px - 2rem);
   display: flex;
   flex-direction: row;
+}
+.drawer-with-custom-shadow {
+  top: calc(9px + 2rem) !important;
+  width: calc(100% - 16px) !important;
+  height: calc(100% - 17px - 2rem) !important;
 }
 #drawer-items {
   width: 8rem;

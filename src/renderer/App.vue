@@ -1,5 +1,9 @@
 <template>
-  <div id="app" :class="{ border: displayBorder, shadow: displayShadow }">
+  <div id="app"
+    :class="{
+      border: displayBorder,
+      shadow: displayShadow && isCustomWindowShadow
+    }">
     <router-view></router-view>
   </div>
 </template>
@@ -7,6 +11,9 @@
 <script>
 export default {
   computed: {
+    winid () {
+      return parseInt(this.$route.params.winid)
+    },
     displayBorder () {
       return !this.$store.state.Window.isFullscreen
     },
@@ -15,61 +22,90 @@ export default {
     },
     volume () {
       return this.$store.state.Player.volume
+    },
+    isCustomWindowShadow () {
+      return this.$store.state.Window.isCustomWindowShadow
     }
   },
   mounted () {
     const electronLocalshortcut = require('electron-localshortcut')
     const win = this.$electron.remote.BrowserWindow.fromId(1)
-
-    electronLocalshortcut.register(win, 'P', function () {
-      this.$store.dispatch('togglePlay')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'I', function () {
-      this.$store.dispatch('toggleStat')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'Enter', function () {
-      this.$store.dispatch('toggleFullscreen')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'Up', function () {
-      this.$store.dispatch('setVolume', this.volume + 5)
-    }.bind(this))
-    electronLocalshortcut.register(win, 'Down', function () {
-      this.$store.dispatch('setVolume', this.volume - 5)
-    }.bind(this))
-    electronLocalshortcut.register(win, 'Left', function () {
-      this.$store.dispatch('goBackward')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'Right', function () {
-      this.$store.dispatch('goForward')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'CommandOrControl+Left', function () {
-      this.$store.dispatch('goPrevious')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'CommandOrControl+Right', function () {
-      this.$store.dispatch('goNext')
-    }.bind(this))
-    electronLocalshortcut.register(win, 'CommandOrControl+C', function () {
-      this.$store.dispatch('getScreenshot')
-    }.bind(this))
-
-    // polyfill
-    window.addEventListener('keydown', function (e) {
-      if (e.keyCode === 32) {
-        this.$store.dispatch('togglePlay')
-      }
-    }.bind(this), true)
-
-    // global shortcuts
     const { ipcRenderer } = require('electron')
-    ipcRenderer.on('global-key-event', function (_, message) {
-      if (message === 'toggle-play') {
+
+    if (this.winid === 1) {
+      electronLocalshortcut.register(win, 'P', function () {
         this.$store.dispatch('togglePlay')
-      } else if (message === 'go-previous') {
+      }.bind(this))
+      electronLocalshortcut.register(win, 'I', function () {
+        this.$store.dispatch('toggleStat')
+      }.bind(this))
+      electronLocalshortcut.register(win, 'Enter', function () {
+        this.$store.dispatch('toggleFullscreen')
+      }.bind(this))
+      electronLocalshortcut.register(win, 'Up', function () {
+        this.$store.dispatch('setVolume', this.volume + 5)
+      }.bind(this))
+      electronLocalshortcut.register(win, 'Down', function () {
+        this.$store.dispatch('setVolume', this.volume - 5)
+      }.bind(this))
+      electronLocalshortcut.register(win, 'Left', function () {
+        this.$store.dispatch('goBackward')
+      }.bind(this))
+      electronLocalshortcut.register(win, 'Right', function () {
+        this.$store.dispatch('goForward')
+      }.bind(this))
+      electronLocalshortcut.register(win, 'CommandOrControl+Left', function () {
         this.$store.dispatch('goPrevious')
-      } else if (message === 'go-next') {
+      }.bind(this))
+      electronLocalshortcut.register(win, 'CommandOrControl+Right', function () {
         this.$store.dispatch('goNext')
+      }.bind(this))
+      electronLocalshortcut.register(win, 'CommandOrControl+C', function () {
+        this.$store.dispatch('getScreenshot')
+      }.bind(this))
+
+      // polyfill
+      window.addEventListener('keydown', function (e) {
+        if (e.keyCode === 32) {
+          this.$store.dispatch('togglePlay')
+        }
+      }.bind(this), true)
+
+      // global shortcuts
+      ipcRenderer.on('global-key-event', function (_, message) {
+        if (message === 'toggle-play') {
+          this.$store.dispatch('togglePlay')
+        } else if (message === 'go-previous') {
+          this.$store.dispatch('goPrevious')
+        } else if (message === 'go-next') {
+          this.$store.dispatch('goNext')
+        }
+      }.bind(this))
+      ipcRenderer.on('window-opened', function (_, message) {
+        const msg = JSON.parse(message)
+        if (msg.filter(i => i.arg === 'side-panel').length) {
+          this.$store.dispatch('setSidePanel', true)
+        } else {
+          this.$store.dispatch('setSidePanel', false)
+        }
+      }.bind(this))
+    }
+
+    if (this.winid === 1) {
+      /// receive some dispatches: { action, payload }
+      window.addEventListener('storage', function (e) {
+        if (e.key === 'popup-window-dispatch' && e.newValue) {
+          const { action, payload } = JSON.parse(e.newValue)
+          this.$store.dispatch(action, payload)
+        }
+      }.bind(this))
+    } else {
+      this.$store.renderDispatch = (action, payload) => {
+        window.localStorage.setItem('popup-window-dispatch',
+          JSON.stringify({ action, payload }))
+        window.localStorage.removeItem('popup-window-dispatch')
       }
-    }.bind(this))
+    }
   }
 }
 </script>

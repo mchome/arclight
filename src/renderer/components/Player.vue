@@ -8,9 +8,7 @@
       @mouseover.native="isHoverUpper = true"
       @mouseout.native="isHoverUpper = false" />
     <div id="mask-controller"
-      @click="togglePlay"
-      @mousemove="hideCursor"
-      :class="{ 'hide-cursor': isHideCursor }">
+      @click="togglePlay">
     </div>
     <player-canvas></player-canvas>
     <player-controller
@@ -61,26 +59,6 @@ export default {
       return (this.isFullscreen || this.osdMode) && !this.isHoverLower
     }
   },
-  // watch: {
-  //   isPlaying: function (val) {
-  //     if (this.isFullscreen && val) {
-  //       this.isHideCursor = false
-  //       clearTimeout(this.hideCursorTimeout)
-  //       this.hideCursorTimeout = setTimeout(function () {
-  //         this.isHideCursor = true
-  //       }.bind(this), 1500)
-  //     } else if (this.isHideCursor) {
-  //       this.isHideCursor = false
-  //       clearTimeout(this.hideCursorTimeout)
-  //     }
-  //   },
-  //   isFullscreen: function (val) {
-  //     if (!this.isFullscreen && this.isHideCursor) {
-  //       this.isHideCursor = false
-  //       clearTimeout(this.hideCursorTimeout)
-  //     }
-  //   }
-  // },
   methods: {
     loadFile (e) {
       e.preventDefault()
@@ -110,25 +88,16 @@ export default {
     },
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
-    },
-    hideCursor () {
-      // if (this.isFullscreen && this.isPlaying) {
-      //   this.isHideCursor = false
-      //   clearTimeout(this.hideCursorTimeout)
-      //   this.hideCursorTimeout = setTimeout(function () {
-      //     this.isHideCursor = true
-      //   }.bind(this), 1500)
-      // }
     }
   },
   mounted () {
     /// receive some dispatches: { action, payload }
-    window.addEventListener('storage', function (e) {
-      if (e.key === 'popup-window-dispatch' && e.newValue) {
-        const { action, payload } = JSON.parse(e.newValue)
-        this.$store.dispatch(action, payload)
-      }
-    }.bind(this))
+    // window.addEventListener('storage', function (e) {
+    //   if (e.key === 'popup-window-dispatch' && e.newValue) {
+    //     const { action, payload } = JSON.parse(e.newValue)
+    //     this.$store.dispatch(action, payload)
+    //   }
+    // }.bind(this))
   }
 }
 </script>
@@ -150,9 +119,5 @@ export default {
 }
 .hide {
   opacity: 0.0 !important;
-}
-
-.hide-cursor {
-  cursor: none;
 }
 </style>

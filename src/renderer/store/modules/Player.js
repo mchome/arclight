@@ -42,6 +42,15 @@ const mutations = {
       ? state.order = 0
       : state.order += 1
   },
+  SET_ORDER (state, order) {
+    if (order > state.fileList.length - 1) {
+      state.order = state.fileList.length - 1
+    } else if (order < 0) {
+      state.order = 0
+    } else {
+      state.order = order
+    }
+  },
   TOGGLE_MUTE (state) {
     state.isMute = !state.isMute
   },
@@ -159,6 +168,10 @@ const actions = {
   },
   goForward () {
     mpv.seek(state.playerNode, state.seek + 5)
+  },
+  setOrder ({ commit }, order) {
+    commit('SET_ORDER', order)
+    mpv.loadFile(state.playerNode, state.fileList[state.order])
   },
   toggleMute ({ commit }) {
     if (state.playerNode != null) {

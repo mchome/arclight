@@ -6,7 +6,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/player/:winid',
       name: 'player',
       component: require('@/components/Player').default
     },
@@ -54,7 +54,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/player'
     }
   ]
 })

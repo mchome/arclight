@@ -7,7 +7,9 @@
 1) grab `mpvjs.node` from https://github.com/Kagami/mpv.js/releases
 2) grab `mpv-1.dll` from libmpv
 3) drop `mpvjs.node` and `mpv-1.dll` to `static/mpv.js/` folder
-4) build it
+4) drop `youtube-dl` binary to top-level of project
+    (If you want to support youtube or other video site witch supported by youtube-dl)
+5) build it
 
 ``` bash
 # install dependencies

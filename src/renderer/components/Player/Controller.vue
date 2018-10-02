@@ -11,8 +11,7 @@
         @mousedown="seeking(true)"
         @mouseup="seeking(false)"
       />
-      <volume-high-icon v-show="!isMute" @click.native="toggleMute" title="Mute" />
-      <volume-off-icon v-show="isMute" @click.native="toggleMute" title="Unmute" />
+      <volume-high-icon :class="{ disabled: isMute }" @click.native="toggleMute" :title="isMute ? 'Unmute' : 'Mute'" />
       <input id="volume-bar"
         class="slider"
         type="range"
@@ -47,14 +46,13 @@
         <p>{{ translateTime(seek) }} / {{ translateTime(duration) }}</p>
       </div>
       <subtitles-icon title="Select subtitles"></subtitles-icon>
-      <watermark-icon @click.native="popupSidePanel" title="Side Panel"></watermark-icon>
+      <watermark-icon :class="{ disabled: !isSidePanelOpened }" @click.native="popupSidePanel" title="Side Panel"></watermark-icon>
     </div>
   </div>
 </template>
 
 <script>
 import VolumeHighIcon from 'icons/VolumeHigh'
-import VolumeOffIcon from 'icons/VolumeOff'
 import PlayIcon from 'icons/Play'
 import PauseIcon from 'icons/Pause'
 import SkipNextIcon from 'icons/SkipNext'
@@ -65,7 +63,6 @@ import WatermarkIcon from 'icons/Watermark'
 export default {
   components: {
     VolumeHighIcon,
-    VolumeOffIcon,
     PlayIcon,
     PauseIcon,
     SkipNextIcon,
@@ -116,6 +113,9 @@ export default {
     },
     isMaximize () {
       return this.$store.state.Window.isMaximize
+    },
+    isSidePanelOpened () {
+      return this.$store.state.Window.isSidePanelOpened
     }
   },
   methods: {
@@ -172,9 +172,11 @@ export default {
 
 #controller-slider > * {
   color: #b1b1b1;
+  transition: all 0.2s ease;
 }
 #controller-btns > * {
   color: #e2e2e2;
+  transition: all 0.2s ease;
 }
 
 #controller-slider {
@@ -267,5 +269,9 @@ export default {
 }
 #label > p {
   color: #b1b1b1;
+}
+
+.disabled {
+  color: #666666 !important;
 }
 </style>

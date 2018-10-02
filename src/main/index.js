@@ -14,9 +14,10 @@ let mainWindow
 let popupWindow = []
 
 ipcMain.on('window-popup', (_, arg) => {
-  const popuped = popupWindow.filter(i => i.arg === arg)
-  if (popuped.length > 0) {
-    popuped[0].win.close()
+  const popped = popupWindow.filter(i => i.arg === arg)
+  if (popped.length > 0) {
+    popped[0].win.close()
+    mainWindow.webContents.send('window-opened', JSON.stringify(popupWindow))
     return
   }
 
@@ -31,12 +32,14 @@ ipcMain.on('window-popup', (_, arg) => {
     })
     popupWindow.push({ arg, win })
   }
+
+  mainWindow.webContents.send('window-opened', JSON.stringify(popupWindow))
 })
 
 function createWindow () {
   mainWindow = new BrowserWindow({
     frame: false,
-    transparent: true,
+    // transparent: true,
     width: 400,
     height: 400,
     minWidth: 400,
@@ -48,8 +51,8 @@ function createWindow () {
   })
 
   const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080`
-    : `file://${__dirname}/index.html`
+    ? `http://localhost:9080/#/player/1`
+    : `file://${__dirname}/index.html#player/1`
 
   globalShortcut.register('MediaPlayPause', () => {
     mainWindow.webContents.send('global-key-event', 'toggle-play')

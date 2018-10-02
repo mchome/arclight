@@ -19,9 +19,6 @@ export default {
     Titlebar
   },
   computed: {
-    winid () {
-      return parseInt(this.$route.params.winid)
-    },
     panelName () {
       return this.$route.name
     }
