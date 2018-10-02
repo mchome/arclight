@@ -81,8 +81,10 @@ export default {
       return this.$store.state.Window.isPinned
     },
     fileName () {
-      return `(${this.$store.state.Player.order + 1}/${this.$store.state.Player.fileList.length})
-        ${this.$store.state.Player.fileName}`
+      const order = `(${this.$store.state.Player.order + 1}/${this.$store.state.Player.fileList.length})`
+      return this.$store.state.Player.fileList.length
+        ? `(${order} ${this.$store.state.Player.fileName}`
+        : this.$store.state.Player.fileName
     }
   },
   methods: {

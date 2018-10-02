@@ -8,6 +8,7 @@
       @mouseover.native="isHoverUpper = true"
       @mouseout.native="isHoverUpper = false" />
     <div id="mask-controller"
+      :class="{ 'logo': isDisplayLogo }"
       @click="togglePlay">
     </div>
     <player-canvas></player-canvas>
@@ -57,6 +58,9 @@ export default {
     },
     hideController () {
       return (this.isFullscreen || this.osdMode) && !this.isHoverLower
+    },
+    isDisplayLogo () {
+      return !this.$store.state.Player.fileList.length
     }
   },
   methods: {
@@ -89,15 +93,6 @@ export default {
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
     }
-  },
-  mounted () {
-    /// receive some dispatches: { action, payload }
-    // window.addEventListener('storage', function (e) {
-    //   if (e.key === 'popup-window-dispatch' && e.newValue) {
-    //     const { action, payload } = JSON.parse(e.newValue)
-    //     this.$store.dispatch(action, payload)
-    //   }
-    // }.bind(this))
   }
 }
 </script>
@@ -114,6 +109,14 @@ export default {
   flex: 1;
   z-index: 10;
 }
+.logo {
+  background-color: #0f0f0f;
+  background-image: url(../assets/logo.png);
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .transparent-show {
   opacity: 0.75 !important;
 }

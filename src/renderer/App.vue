@@ -48,12 +48,6 @@ export default {
       electronLocalshortcut.register(win, 'Down', function () {
         this.$store.dispatch('setVolume', this.volume - 5)
       }.bind(this))
-      electronLocalshortcut.register(win, 'Left', function () {
-        this.$store.dispatch('goBackward')
-      }.bind(this))
-      electronLocalshortcut.register(win, 'Right', function () {
-        this.$store.dispatch('goForward')
-      }.bind(this))
       electronLocalshortcut.register(win, 'CommandOrControl+Left', function () {
         this.$store.dispatch('goPrevious')
       }.bind(this))
@@ -68,6 +62,13 @@ export default {
       window.addEventListener('keydown', function (e) {
         if (e.keyCode === 32) {
           this.$store.dispatch('togglePlay')
+        }
+      }.bind(this), true)
+      window.addEventListener('keyup', function (e) {
+        if (e.keyCode === 37) {
+          this.$store.dispatch('goBackward')
+        } else if (e.keyCode === 39) {
+          this.$store.dispatch('goForward')
         }
       }.bind(this), true)
 

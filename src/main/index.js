@@ -24,11 +24,13 @@ ipcMain.on('window-popup', (_, arg) => {
   if (arg === 'side-panel') {
     const win = createSidePanelWindow(() => {
       popupWindow.splice(popupWindow.indexOf(arg), 1)
+      mainWindow.webContents.send('window-opened', JSON.stringify(popupWindow))
     })
     popupWindow.push({ arg, win })
   } else if (arg === 'context-menu') {
     const win = createContextMenuWindow(() => {
       popupWindow.splice(popupWindow.indexOf(arg), 1)
+      mainWindow.webContents.send('window-opened', JSON.stringify(popupWindow))
     })
     popupWindow.push({ arg, win })
   }

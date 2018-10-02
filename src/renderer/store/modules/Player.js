@@ -115,7 +115,7 @@ const actions = {
       commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
       mpv.loadFile(state.playerNode, state.fileList[state.order])
-      // mpv.goPlay(state.playerNode, true)
+      mpv.goPlay(state.playerNode, true)
     }
   },
   setVolume (_, volume) {
@@ -154,19 +154,23 @@ const actions = {
     commit('SET_SEEKING', isSeeking)
   },
   goPrevious ({ commit }) {
+    if (!state.fileList.length) return
     commit('GO_PREVIOUS')
     mpv.loadFile(state.playerNode, state.fileList[state.order])
   },
   goNext ({ commit }) {
+    if (!state.fileList.length) return
     commit('GO_NEXT')
     mpv.loadFile(state.playerNode, state.fileList[state.order])
   },
   goBackward () {
+    if (!state.fileList.length) return
     let seconds = state.seek - 5
     if (seconds < 0) seconds = 0
     mpv.seek(state.playerNode, seconds)
   },
   goForward () {
+    if (!state.fileList.length) return
     mpv.seek(state.playerNode, state.seek + 5)
   },
   setOrder ({ commit }, order) {

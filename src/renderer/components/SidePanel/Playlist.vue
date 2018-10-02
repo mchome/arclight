@@ -7,7 +7,8 @@
         :index="index"
         :class="{ 'active': (index === order) }"
         @dblclick="setOrder(index)">
-        {{ file.base }}
+        <span>{{ index + 1 + "." }} {{ file.base }}</span>
+        <span>{{ file.full }}</span>
       </li>
     </ul>
   </div>
@@ -31,10 +32,24 @@ export default {
       }
     }
   },
+  watch: {
+    order () { this.focusElm() }
+  },
   methods: {
     setOrder (order) {
       this.$store.renderDispatch('setOrder', order)
+    },
+    focusElm (microseconds = 100) {
+      setTimeout(() => {
+        const el = document.querySelectorAll('.active')
+        if (el.length) {
+          el[0].scrollIntoView({ behavior: 'smooth' })
+        }
+      }, microseconds)
     }
+  },
+  mounted () {
+    this.focusElm(300)
   }
 }
 </script>
@@ -62,27 +77,31 @@ export default {
   margin-top: 0;
 }
 .filename {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: lighter;
   white-space: nowrap;
   letter-spacing: 0.3px;
   overflow-x: hidden;
   display: flex;
-  align-items: center;
   margin: 0.3rem 0;
-  padding: 0.6rem 0.6rem;
+  padding: 0.6rem 0.3rem;
   margin-right: 0.32rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s linear;
+  flex-direction: column;
 }
 .filename:hover {
-  color: #0f0f0f;
   font-weight: normal;
+  color: #0f0f0f;
   background-color: #888888;
 }
 .filename:active {
-  color: #0f0f0f;
   font-weight: normal;
+  color: #0f0f0f;
   background-color: #b3b3b3;
+}
+.filename > span:last-child {
+  font-size: 0.55rem;
+  margin-left: 1rem;
 }
 
 .active {

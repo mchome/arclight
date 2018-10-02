@@ -38,8 +38,8 @@ export default {
   methods: {
     loadFile () {
       // TODO: delete me
-      const files = [require('path').join(__dirname, '../../../../test.mp4')]
-      this.$store.dispatch('loadFiles', files)
+      // const files = [require('path').join(__dirname, '../../../../test.mp4')]
+      // this.$store.dispatch('loadFiles', files)
     }
   },
   mounted () {

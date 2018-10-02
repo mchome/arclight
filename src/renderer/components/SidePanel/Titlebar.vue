@@ -11,31 +11,36 @@
       <window-close-icon @click.native="close" title="Close" />
     </div>
 
-    <div id="drawer" :class="{ 'drawer-with-custom-shadow': isCustomWindowShadow }" v-show="isOpenDrawer" @click="toggleDrawer">
-      <div id="drawer-items">
-        <router-link tag="div" :to="{ name: 'playlist' }">
-          <playlist-play-icon />
-          <p>Playlist</p>
-        </router-link>
-        <router-link tag="div" :to="{ name: 'metadata' }">
-          <content-copy-icon />
-          <p>Metadata</p>
-        </router-link>
-        <router-link tag="div" :to="{ name: 'effect' }">
-          <image-filter-hdr-icon />
-          <p>Effect</p>
-        </router-link>
-        <router-link tag="div" :to="{ name: 'settings' }">
-          <settings-icon />
-          <p>Settings</p>
-        </router-link>
-        <router-link tag="div" :to="{ name: 'about' }">
-          <information-outline-icon />
-          <p>About</p>
-        </router-link>
+    <transition name="fade">
+      <div id="drawer"
+        :class="{ 'drawer-with-custom-shadow': isCustomWindowShadow }"
+        v-show="isOpenDrawer"
+        @click="toggleDrawer">
+        <div id="drawer-items">
+          <router-link tag="div" :to="{ name: 'playlist' }">
+            <playlist-play-icon />
+            <p>Playlist</p>
+          </router-link>
+          <router-link tag="div" :to="{ name: 'metadata' }">
+            <content-copy-icon />
+            <p>Metadata</p>
+          </router-link>
+          <router-link tag="div" :to="{ name: 'effect' }">
+            <image-filter-hdr-icon />
+            <p>Effect</p>
+          </router-link>
+          <router-link tag="div" :to="{ name: 'settings' }">
+            <settings-icon />
+            <p>Settings</p>
+          </router-link>
+          <router-link tag="div" :to="{ name: 'about' }">
+            <information-outline-icon />
+            <p>About</p>
+          </router-link>
+        </div>
+        <div id="drawer-mask"></div>
       </div>
-      <div id="drawer-mask"></div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -166,7 +171,7 @@ export default {
   width: 8rem;
   display: flex;
   flex-direction: column;
-  background-color: #000000;
+  background-color: #000000dd;
   box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
               0 16px 24px 2px rgba(0, 0, 0, 0.14),
               0 6px 30px 5px rgba(0, 0, 0, 0.12);
@@ -206,5 +211,12 @@ export default {
 #drawer-mask {
   flex: 1;
   background-color: #00000059;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.35s linear;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
