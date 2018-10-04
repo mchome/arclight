@@ -4,10 +4,14 @@
       <p>{{ title }}</p>
     </div>
 
-    <div id="media-title" class="draggable" v-show="!isFullscreen && !isMaximize">
+    <div id="media-title" class="draggable"
+      v-show="!isFullscreen && !isMaximize"
+      @dblclick="toggleFullscreen">
       <p>{{ fileName }}</p>
     </div>
-    <div id="media-title" v-show="isFullscreen || isMaximize">
+    <div id="media-title"
+      v-show="isFullscreen || isMaximize"
+      @dblclick="toggleFullscreen">
       <p>{{ fileName }}</p>
     </div>
 
@@ -59,9 +63,9 @@ export default {
       const val = this.$store.state.Window.isFullscreen
       try {
         if (val) {
-          this.$electron.remote.getCurrentWindow().setResizable(false)
+          this.$electron.remote.BrowserWindow.fromId(1).setResizable(false)
         } else {
-          this.$electron.remote.getCurrentWindow().setResizable(true)
+          this.$electron.remote.BrowserWindow.fromId(1).setResizable(true)
         }
       } catch (_) { }
       return val
@@ -70,9 +74,9 @@ export default {
       const val = this.$store.state.Window.isMaximize
       try {
         if (val) {
-          this.$electron.remote.getCurrentWindow().setResizable(false)
+          this.$electron.remote.BrowserWindow.fromId(1).setResizable(false)
         } else {
-          this.$electron.remote.getCurrentWindow().setResizable(true)
+          this.$electron.remote.BrowserWindow.fromId(1).setResizable(true)
         }
       } catch (_) { }
       return val
@@ -92,7 +96,7 @@ export default {
       this.$store.dispatch('toggleMaximize')
     },
     toggleMinimize () {
-      this.$electron.remote.getCurrentWindow().minimize()
+      this.$electron.remote.BrowserWindow.fromId(1).minimize()
     },
     toggleFullscreen () {
       this.$store.dispatch('toggleFullscreen')
@@ -116,6 +120,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #000000;
+  z-index: 4;
   opacity: 1.0;
   transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1);
 }

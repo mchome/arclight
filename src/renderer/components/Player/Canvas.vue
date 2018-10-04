@@ -2,7 +2,7 @@
   <div id="player-canvas"
     :class="{
       fullscreen: isFullscreen,
-      maximize: isMaximize || !isCustomWindowShadow,
+      maximize: isMaximize,
       fillscreen: osdMode && !isFullscreen
     }">
     <embed id="mpvjs" type="application/x-mpvjs" />
@@ -23,9 +23,6 @@ export default {
     },
     osdMode () {
       return this.$store.state.Settings.osdMode
-    },
-    isCustomWindowShadow () {
-      return this.$store.state.Window.isCustomWindowShadow
     }
   },
   watch: {
@@ -56,7 +53,7 @@ export default {
   position: absolute;
   height: calc(100% - 16px - 6rem);
   width: calc(100% - 16px);
-  z-index: -1;
+  z-index: 1;
   margin-top: 2rem;
 }
 #mpvjs {

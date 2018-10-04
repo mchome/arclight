@@ -41,7 +41,7 @@ ipcMain.on('window-popup', (_, arg) => {
 function createWindow () {
   mainWindow = new BrowserWindow({
     frame: false,
-    // transparent: true,
+    transparent: true,
     width: 400,
     height: 400,
     minWidth: 400,

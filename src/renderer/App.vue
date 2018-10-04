@@ -1,9 +1,6 @@
 <template>
   <div id="app"
-    :class="{
-      border: displayBorder,
-      shadow: displayShadow && isCustomWindowShadow
-    }">
+    :class="{ border: displayBorder, shadow: displayShadow }">
     <router-view></router-view>
   </div>
 </template>
@@ -22,15 +19,18 @@ export default {
     },
     volume () {
       return this.$store.state.Player.volume
-    },
-    isCustomWindowShadow () {
-      return this.$store.state.Window.isCustomWindowShadow
     }
   },
   mounted () {
     const electronLocalshortcut = require('electron-localshortcut')
     const win = this.$electron.remote.BrowserWindow.fromId(1)
     const { ipcRenderer } = require('electron')
+    const drag = require('electron-drag')
+
+    drag('.draggable')
+    if (!drag.supported) {
+      document.querySelector('.draggable').style['-webkit-app-region'] = 'drag'
+    }
 
     if (this.winid === 1) {
       electronLocalshortcut.register(win, 'P', function () {
@@ -155,7 +155,7 @@ body {
               0 3px 6px rgba(0,0,0,0.23);
 }
 
-.draggable {
+/* .draggable {
   -webkit-app-region: drag
-}
+} */
 </style>

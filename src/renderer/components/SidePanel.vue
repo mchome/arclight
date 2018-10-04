@@ -37,7 +37,7 @@ export default {
 
 #panel {
   flex: 1;
-  background-color: #0f0f0f;
+  background-color: #0f0f0faa;
   color: #e2e2e2;
 }
 

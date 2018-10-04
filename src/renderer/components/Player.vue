@@ -27,7 +27,7 @@ import Titlebar from './Player/Titlebar'
 import PlayerCanvas from './Player/Canvas'
 import PlayerController from './Player/Controller'
 
-const fs = require('fs')
+import drive from '../drive'
 
 export default {
   components: {
@@ -38,9 +38,7 @@ export default {
   data () {
     return {
       isHoverUpper: false,
-      isHoverLower: false,
-      isHideCursor: false,
-      hideCursorTimeout: null
+      isHoverLower: false
     }
   },
   computed: {
@@ -67,22 +65,14 @@ export default {
     loadFile (e) {
       e.preventDefault()
       let files = []
-      const urls = e.dataTransfer.getData('text')
 
-      for (let file of e.dataTransfer.files) {
-        if (fs.statSync(file.path).isFile()) {
-          files.push(file.path)
-        } else {
-          fs.readdirSync(file.path).forEach((f) => {
-            if (fs.statSync(require('path').join(file.path, f)).isFile()) {
-              files.push(require('path').join(file.path, f))
-            }
-          })
-        }
-      }
+      files = files.concat(drive.parseFiles(e.dataTransfer.files))
+
+      const urls = e.dataTransfer.getData('text')
       if (urls.length) {
         files = files.concat(urls.split(/\r?\n/))
       }
+
       if (files.length) {
         this.$store.dispatch('loadFiles', files)
       }

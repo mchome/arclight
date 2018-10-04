@@ -6,7 +6,16 @@ export default class mpv {
       'duration',
       'eof-reached',
       'filename',
-      'volume'
+      'volume',
+      // 'aid',
+      // 'hwdec-current',
+      // 'chapters',
+      // 'width',
+      // 'height',
+      // 'video-format',
+      // 'seekable',
+      'mpv-version',
+      'ffmpeg-version'
     ]
     observable.forEach(v => this._setObserve(el, v))
     this._sendProperty(el, 'hwdec', 'auto')
@@ -36,10 +45,16 @@ export default class mpv {
     this._sendProperty(el, 'time-pos', seconds.toString())
   }
   static screenshot (el, includeSubtitles = true) {
-    this._sendCommand(el, 'screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')
+    this._sendCommand(el, 'screenshot-raw', includeSubtitles ? 'subtitles' : 'video', 'single')
   }
   static stat (el) {
     this._sendCommand(el, 'keypress', 'I')
+  }
+  static getMPVVersion (el) {
+    this._getPropertyAsync(el, 'mpv-version')
+  }
+  static getFFMPEGVersion (el) {
+    this._getPropertyAsync(el, 'ffmpeg-version')
   }
 
   static _sendCommand (el, cmd, ...args) {
@@ -58,6 +73,12 @@ export default class mpv {
   static _setObserve (el, name) {
     el.postMessage({
       type: 'observe_property',
+      data: name
+    })
+  }
+  static _getPropertyAsync (el, name) {
+    el.postMessage({
+      type: 'get_property_async',
       data: name
     })
   }

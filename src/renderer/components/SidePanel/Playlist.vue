@@ -1,6 +1,6 @@
 <template>
   <div id="playlist">
-    <ul id="filelist">
+    <ul id="filelist" @dragover.prevent @drop="loadFile">
       <li class="filename"
         v-for="(file, index) in fileList"
         :key="file.id"
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import drive from '../../drive'
+
 export default {
   computed: {
     fileList: {
@@ -33,13 +35,28 @@ export default {
     }
   },
   watch: {
-    order () { this.focusElm() }
+    order () { this.focusEl() }
   },
   methods: {
+    loadFile (e) {
+      e.preventDefault()
+      let files = []
+
+      files = files.concat(drive.parseFiles(e.dataTransfer.files))
+
+      const urls = e.dataTransfer.getData('text')
+      if (urls.length) {
+        files = files.concat(urls.split(/\r?\n/))
+      }
+
+      if (files.length) {
+        this.$store.renderDispatch('loadFiles', files)
+      }
+    },
     setOrder (order) {
       this.$store.renderDispatch('setOrder', order)
     },
-    focusElm (microseconds = 100) {
+    focusEl (microseconds = 100) {
       setTimeout(() => {
         const el = document.querySelectorAll('.active')
         if (el.length) {
@@ -49,7 +66,7 @@ export default {
     }
   },
   mounted () {
-    this.focusElm(300)
+    this.focusEl(300)
   }
 }
 </script>

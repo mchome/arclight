@@ -166,6 +166,7 @@ export default {
   background-color: #1d1d1d;
   display: flex;
   flex-direction: column;
+  z-index: 4;
   opacity: 1.0;
   transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1);
 }

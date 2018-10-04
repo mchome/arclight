@@ -114,6 +114,7 @@ const actions = {
       mpv.stop(state.playerNode)
       commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
+      commit('SET_ORDER', 0)
       mpv.loadFile(state.playerNode, state.fileList[state.order])
       mpv.goPlay(state.playerNode, true)
     }
@@ -184,7 +185,7 @@ const actions = {
     }
   },
   getScreenshot () {
-    // mpv.screenshot(state.playerNode, false)
+    mpv.screenshot(state.playerNode, false)
   },
   toggleStat ({ commit }) {
     mpv.stat(state.playerNode)

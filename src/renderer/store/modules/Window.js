@@ -5,7 +5,6 @@ const state = {
   isFullscreen: false,
   isPinned: false,
   isSidePanelOpened: false,
-  isCustomWindowShadow: false,
   _windowBound: { x: 0, y: 0, width: 0, height: 0 }
 }
 
@@ -44,10 +43,12 @@ const actions = {
   toggleFullscreen ({ commit }) {
     if (state.isFullscreen) {
       electron.BrowserWindow.fromId(1).setFullScreen(false)
+      // electron.BrowserWindow.fromId(1).setKiosk(false)
       electron.BrowserWindow.fromId(1).setBounds(state._windowBound, true)
     } else {
       commit('SET_MAINWINDOW', electron.BrowserWindow.fromId(1).getBounds())
       electron.BrowserWindow.fromId(1).setFullScreen(true)
+      // electron.BrowserWindow.fromId(1).setKiosk(true)
     }
     commit('TOGGLE_FULLSCREEN')
   },
