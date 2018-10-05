@@ -43,6 +43,11 @@
 
 - [ ] 音乐模式
 
+4:
+
+- [ ] 使用`vue-cli-plugin-electron-builder`
+- [ ] 直接使用canvas(webgl)渲染MPV
+
 ## Note
 
 - <https://electronjs.org/docs/api/browser-window>

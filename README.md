@@ -1,6 +1,6 @@
-# arclight
+# Arclight
 
-> A video player(WIP) based on mpv.js(libmpv).
+> A video player (WIP) based on mpv.js (libmpv).
 
 ## Build Setup
 

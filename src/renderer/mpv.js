@@ -45,7 +45,7 @@ export default class mpv {
     this._sendProperty(el, 'time-pos', seconds.toString())
   }
   static screenshot (el, includeSubtitles = true) {
-    this._sendCommand(el, 'screenshot-raw', includeSubtitles ? 'subtitles' : 'video', 'single')
+    this._sendCommand(el, 'screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')
   }
   static stat (el) {
     this._sendCommand(el, 'keypress', 'I')
