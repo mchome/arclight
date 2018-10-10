@@ -41,7 +41,7 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
-      this.$store.dispatch('loadPlayerNode', document.getElementById('mpvjs'))
+      this.$store.dispatch('loadPlayer', document.getElementById('mpvjs'))
     })
   }
 }

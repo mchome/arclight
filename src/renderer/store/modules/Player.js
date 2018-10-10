@@ -1,7 +1,7 @@
-import mpv from '../../mpv'
+import Mpv from '../../mpv'
 
 const state = {
-  playerNode: null,
+  playerInstance: null,
   playerReady: false,
   order: 0,
   fileList: [],
@@ -16,8 +16,8 @@ const state = {
 }
 
 const mutations = {
-  LOAD_PLAYER_NODE (state, playerNode) {
-    state.playerNode = playerNode
+  LOAD_PLAYER_INSTANCE (state, element) {
+    state.playerInstance = new Mpv(element)
   },
   PLAYER_READY (state, isReady) {
     state.playerReady = isReady
@@ -72,14 +72,14 @@ const mutations = {
 }
 
 const actions = {
-  loadPlayerNode ({ commit }, playerNode) {
-    commit('LOAD_PLAYER_NODE', playerNode)
+  loadPlayer ({ commit }, element) {
+    commit('LOAD_PLAYER_INSTANCE', element)
     commit('SET_VOLUME', '100')
-    state.playerNode.addEventListener('message', (e) => {
+    element.addEventListener('message', (e) => {
       const { type, data } = e.data
       if (type === 'ready') {
         commit('PLAYER_READY', true)
-        mpv.playerReady(state.playerNode)
+        state.playerInstance.playerReady()
       } else if (type === 'property_change') {
         const { name, value } = data
         if (name === 'duration') {
@@ -95,8 +95,8 @@ const actions = {
         } else if (name === 'eof-reached') {
           if (value && state.order !== state.fileList.length - 1) {
             commit('GO_NEXT')
-            mpv.loadFile(state.playerNode, state.fileList[state.order])
-            mpv.goPlay(state.playerNode, true)
+            state.playerInstance.loadFile(state.fileList[state.order])
+            state.playerInstance.goPlay(true)
           }
         } else if (name === 'filename') {
           commit('SET_FILENAME', value)
@@ -109,86 +109,88 @@ const actions = {
     })
   },
   loadFiles ({ commit }, files) {
-    if (state.playerNode != null && state.playerReady) {
-      mpv.goPlay(state.playerNode, false)
-      mpv.stop(state.playerNode)
+    if (state.playerInstance != null && state.playerReady) {
+      state.playerInstance.goPlay(false)
+      state.playerInstance.stop(state.playerInstance)
       commit('TOGGLE_PLAY', false)
       commit('LOAD_FILES', files)
       commit('SET_ORDER', 0)
-      mpv.loadFile(state.playerNode, state.fileList[state.order])
-      mpv.goPlay(state.playerNode, true)
+      state.playerInstance.loadFile(state.fileList[state.order])
+      state.playerInstance.goPlay(true)
     }
   },
   setVolume (_, volume) {
-    if (state.playerNode != null && state.playerReady) {
-      mpv.setVolume(state.playerNode, volume)
+    if (state.playerInstance != null && state.playerReady) {
+      state.playerInstance.setVolume(volume)
     }
   },
   togglePlay () {
-    if (state.playerNode != null &&
+    if (state.playerInstance != null &&
       state.playerReady &&
       state.fileList.length) {
       if (state.order === state.fileList.length - 1 &&
         Math.floor(state.seek) === Math.floor(state.duration)) {
-        mpv.seek(state.playerNode, 0)
+        state.playerInstance.seek(0)
       }
-      mpv.goPlay(state.playerNode, !state.isPlaying)
+      state.playerInstance.goPlay(!state.isPlaying)
     }
   },
   stop ({ commit }) {
-    if (state.playerNode != null && state.playerReady) {
-      mpv.goPlay(state.playerNode, false)
-      mpv.seek(state.playerNode, 0)
+    if (state.playerInstance != null && state.playerReady) {
+      state.playerInstance.goPlay(false)
+      state.playerInstance.seek(0)
       commit('TOGGLE_PLAY', false)
     }
   },
   seek ({ commit }, seconds) {
     commit('SET_SEEK', seconds)
-    mpv.seek(state.playerNode, seconds)
+    state.playerInstance.seek(seconds)
   },
   seeking ({ commit }, isSeeking) {
     if (isSeeking || !state.isPlaying) {
-      mpv.goPlay(state.playerNode, false)
+      state.playerInstance.goPlay(false)
     } else {
-      mpv.goPlay(state.playerNode, true)
+      state.playerInstance.goPlay(true)
     }
     commit('SET_SEEKING', isSeeking)
   },
   goPrevious ({ commit }) {
     if (!state.fileList.length) return
     commit('GO_PREVIOUS')
-    mpv.loadFile(state.playerNode, state.fileList[state.order])
+    state.playerInstance.loadFile(state.fileList[state.order])
   },
   goNext ({ commit }) {
     if (!state.fileList.length) return
     commit('GO_NEXT')
-    mpv.loadFile(state.playerNode, state.fileList[state.order])
+    state.playerInstance.loadFile(state.fileList[state.order])
   },
   goBackward () {
     if (!state.fileList.length) return
     let seconds = state.seek - 5
     if (seconds < 0) seconds = 0
-    mpv.seek(state.playerNode, seconds)
+    state.playerInstance.seek(seconds)
   },
   goForward () {
     if (!state.fileList.length) return
-    mpv.seek(state.playerNode, state.seek + 5)
+    state.playerInstance.seek(state.seek + 5)
   },
   setOrder ({ commit }, order) {
     commit('SET_ORDER', order)
-    mpv.loadFile(state.playerNode, state.fileList[state.order])
+    state.playerInstance.loadFile(state.fileList[state.order])
   },
   toggleMute ({ commit }) {
-    if (state.playerNode != null) {
-      state.isMute ? mpv.unmute(state.playerNode) : mpv.mute(state.playerNode)
+    if (state.playerInstance != null) {
+      state.isMute
+        ? state.playerInstance.unmute(state.playerInstance)
+        : state.playerInstance.mute(state.playerInstance)
       commit('TOGGLE_MUTE')
     }
   },
   getScreenshot () {
-    mpv.screenshot(state.playerNode, false)
+    state.playerInstance.screenshot(false)
   },
   toggleStat ({ commit }) {
-    mpv.stat(state.playerNode)
+    state.playerInstance.stat(state.playerInstance)
     commit('TOGGLE_STAT')
   }
 }

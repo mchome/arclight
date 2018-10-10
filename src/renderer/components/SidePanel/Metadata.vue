@@ -6,9 +6,17 @@
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
   computed: {
   },
   methods: {
+  },
+  mounted () {
+    this.$nextTick(() => {
+    })
   }
 }
 </script>

@@ -1,5 +1,9 @@
-export default class mpv {
-  static playerReady (el) {
+export default class Mpv {
+  constructor (element) {
+    this.mpv = element
+  }
+
+  playerReady () {
     const observable = [
       'pause',
       'time-pos',
@@ -7,77 +11,70 @@ export default class mpv {
       'eof-reached',
       'filename',
       'volume',
-      // 'aid',
-      // 'hwdec-current',
-      // 'chapters',
-      // 'width',
-      // 'height',
-      // 'video-format',
-      // 'seekable',
       'mpv-version',
       'ffmpeg-version'
     ]
-    observable.forEach(v => this._setObserve(el, v))
-    this._sendProperty(el, 'hwdec', 'auto')
+    observable.forEach(v => this._setObserve(v))
+    this._sendProperty('hwdec', 'auto')
   }
-  static loadFile (el, filePath) {
-    this._sendCommand(el, 'loadfile', filePath)
+  loadFile (filePath) {
+    this._sendCommand('loadfile', filePath)
   }
-  static goPlay (el, play) {
-    this._sendProperty(el, 'pause', !play)
+  goPlay (play) {
+    this._sendProperty('pause', !play)
   }
-  static stop (el) {
-    this._sendCommand(el, 'stop')
+  stop () {
+    this._sendCommand('stop')
   }
-  static setVolume (el, volume) {
-    this._sendProperty(el, 'volume', volume)
+  setVolume (volume) {
+    this._sendProperty('volume', volume)
   }
-  static mute (el) {
-    this._sendProperty(el, 'mute', true)
+  mute () {
+    this._sendProperty('mute', true)
   }
-  static unmute (el) {
-    this._sendProperty(el, 'mute', false)
+  unmute () {
+    this._sendProperty('mute', false)
   }
-  static seek (el, seconds, relative = false) {
-    this._sendCommand(el, 'seek', seconds.toString(), relative ? 'relative' : 'absolute')
+  seek (seconds, relative = false) {
+    this._sendCommand('seek', seconds.toString(), relative ? 'relative' : 'absolute')
   }
-  static setTimePos (el, seconds) {
-    this._sendProperty(el, 'time-pos', seconds.toString())
+  setTimePos (seconds) {
+    this._sendProperty('time-pos', seconds.toString())
   }
-  static screenshot (el, includeSubtitles = true) {
-    this._sendCommand(el, 'screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')
+  screenshot (includeSubtitles = true) {
+    this._sendCommand('screenshot', includeSubtitles ? 'subtitles' : 'video', 'single')
   }
-  static stat (el) {
-    this._sendCommand(el, 'keypress', 'I')
+  stat () {
+    this._sendCommand('keypress', 'I')
   }
-  static getMPVVersion (el) {
-    this._getPropertyAsync(el, 'mpv-version')
+  getMPVVersion () {
+    this._getPropertyAsync('mpv-version')
   }
-  static getFFMPEGVersion (el) {
-    this._getPropertyAsync(el, 'ffmpeg-version')
+  getFFMPEGVersion () {
+    this._getPropertyAsync('ffmpeg-version')
   }
 
-  static _sendCommand (el, cmd, ...args) {
+  _sendCommand (cmd, ...args) {
     args = args.map(arg => arg.toString())
-    el.postMessage({
+    this.mpv.postMessage({
       type: 'command',
       data: [cmd].concat(args)
     })
   }
-  static _sendProperty (el, name, value) {
-    el.postMessage({
+  _sendProperty (name, value) {
+    this.mpv.postMessage({
       type: 'set_property',
       data: { name, value }
     })
   }
-  static _setObserve (el, name) {
-    el.postMessage({
+  _setObserve (name) {
+    this.mpv.postMessage({
       type: 'observe_property',
       data: name
     })
   }
-  static _getPropertyAsync (el, name) {
-    el.postMessage({
+  _getPropertyAsync (name) {
+    this.mpv.postMessage({
       type: 'get_property_async',
       data: name
     })
