@@ -79,10 +79,21 @@ function createWindow () {
   })
 }
 
-let pluginPath = path.join(__static, 'mpv.js/mpvjs.node;application/x-mpvjs').split('\\').join('/')
+let os
+switch (process.platform) {
+  case 'darwin':
+    os = 'mac'
+    break
+  case 'win32':
+    os = 'win'
+    break
+}
+
+let pluginPath = path.join(__static, 'mpv.js', os, 'mpvjs.node;application/x-mpvjs').split('\\').join('/')
 if (process.env.NODE_ENV === 'production') {
   pluginPath = pluginPath.replace('app.asar', 'app.asar.unpacked')
 }
+
 app.commandLine.appendSwitch('ignore-gpu-blacklist')
 app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 

@@ -29,7 +29,8 @@
     ],
     "asar": true,
     "asarUnpack": [
-      "dist/electron/static/mpv.js/*"
+      "dist/electron/static/mpv.js/mac/*",
+      "dist/electron/static/mpv.js/windows/*"
     ],
     "fileAssociations": [
       {
@@ -84,6 +85,7 @@
     "electron-drag": "^1.2.2",
     "electron-localshortcut": "^3.1.0",
     "fast-xml-parser": "^3.12.5",
+    "mpv.js-vanilla": "^0.3.4",
     "vue": "^2.5.17",
     "vue-electron": "^1.0.6",
     "vue-material-design-icons": "^2.1.1",
@@ -108,7 +110,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^3.0.2",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^21.2.0",
     "electron-debug": "^2.0.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-rebuild": "^1.8.2",

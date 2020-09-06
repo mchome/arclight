@@ -52,13 +52,13 @@
 </template>
 
 <script>
-import VolumeHighIcon from 'icons/VolumeHigh'
-import PlayIcon from 'icons/Play'
-import PauseIcon from 'icons/Pause'
-import SkipNextIcon from 'icons/SkipNext'
-import SkipPreviousIcon from 'icons/SkipPrevious'
-import SubtitlesIcon from 'icons/Subtitles'
-import WatermarkIcon from 'icons/Watermark'
+import VolumeHighIcon from 'vue-material-design-icons/VolumeHigh'
+import PlayIcon from 'vue-material-design-icons/Play'
+import PauseIcon from 'vue-material-design-icons/Pause'
+import SkipNextIcon from 'vue-material-design-icons/SkipNext'
+import SkipPreviousIcon from 'vue-material-design-icons/SkipPrevious'
+import SubtitlesIcon from 'vue-material-design-icons/Subtitles'
+import WatermarkIcon from 'vue-material-design-icons/Watermark'
 
 export default {
   components: {

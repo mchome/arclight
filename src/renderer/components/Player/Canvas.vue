@@ -10,6 +10,8 @@
 </template>
 
 <script>
+const { remote } = require('electron')
+
 export default {
   computed: {
     playerReady () {
@@ -37,6 +39,29 @@ export default {
       // TODO: delete me
       // const files = [require('path').join(__dirname, '../../../../test.mp4')]
       // this.$store.dispatch('loadFiles', files)
+
+      let dialog = remote.dialog
+      let currentWindow = remote.getCurrentWindow()
+
+      let options = {
+        // See place holder 1 in above image
+        title: 'Select Video',
+
+        // See place holder 3 in above image
+        buttonLabel: 'Load Video',
+
+        // See place holder 4 in above image
+        filters: [
+          { name: 'Videos', extensions: ['mkv', 'avi', 'mp4'] },
+          { name: 'All Files', extensions: ['*'] }
+        ],
+        properties: ['openFile', 'multiSelections']
+      }
+
+      // Synchronous
+      let filePaths = dialog.showOpenDialog(currentWindow, options)
+
+      this.$store.dispatch('loadFiles', filePaths)
     }
   },
   mounted () {
