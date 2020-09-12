@@ -1,4 +1,5 @@
 import Mpv from '../../mpv'
+import * as app from '../../lib/app'
 
 const state = {
   playerInstance: null,
@@ -116,7 +117,11 @@ const actions = {
       commit('LOAD_FILES', files)
       commit('SET_ORDER', 0)
       state.playerInstance.loadFile(state.fileList[state.order])
-      state.playerInstance.goPlay(true)
+
+      let autoPlay = app.config.get('autoPlay')
+      if (autoPlay) {
+        state.playerInstance.goPlay(true)
+      }
     }
   },
   setVolume (_, volume) {
