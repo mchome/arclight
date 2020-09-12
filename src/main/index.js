@@ -41,7 +41,7 @@ ipcMain.on('window-popup', (_, arg) => {
 
 async function createWindow () {
   const configModule = new ConfigModule()
-  await configModule.load();
+  await configModule.load()
 
   mainWindow = new BrowserWindow({
     frame: false,
