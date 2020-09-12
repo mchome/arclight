@@ -12,3 +12,4 @@ package-lock.json
 
 *.exe
 static/tmp/
+.idea/

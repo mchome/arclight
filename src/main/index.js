@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
-const path = require('path')
 import ConfigModule from './modules/config'
+const path = require('path')
 const {
   createSidePanelWindow,
   createContextMenuWindow
@@ -41,7 +41,7 @@ ipcMain.on('window-popup', (_, arg) => {
 
 async function createWindow () {
   const configModule = new ConfigModule()
-  await configModule.init()
+  await configModule.load();
 
   mainWindow = new BrowserWindow({
     frame: false,
@@ -52,6 +52,7 @@ async function createWindow () {
     minHeight: 400,
     useContentSize: true,
     webPreferences: {
+      nodeIntegration: true,
       plugins: true
     }
   })

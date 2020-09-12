@@ -5,12 +5,11 @@ import teeny from 'teeny-conf'
 const { app } = electron
 
 class ConfigModule {
-
-  constructor() {
+  constructor () {
     this.workArea = electron.screen.getPrimaryDisplay().workArea
   }
 
-  async load() {
+  async load () {
     const defaultConfig = this.getDefaultConfig()
     const userDataPath = app.getPath('userData')
 
@@ -33,7 +32,7 @@ class ConfigModule {
     }
   }
 
-  getDefaultConfig() {
+  getDefaultConfig () {
     const config = {
       volume: 100,
       muted: false,
@@ -51,7 +50,7 @@ class ConfigModule {
     return config
   }
 
-  getConfig() {
+  getConfig () {
     if (!this.conf) {
       throw new Error('Config not loaded.')
     }
@@ -59,7 +58,7 @@ class ConfigModule {
     return this.conf.get()
   }
 
-  get(key) {
+  get (key) {
     if (!this.conf) {
       throw new Error('Config not loaded.')
     }
@@ -67,7 +66,7 @@ class ConfigModule {
     return this.conf.get(key)
   }
 
-  reload() {
+  reload () {
     if (!this.conf) {
       throw new Error('Config not loaded.')
     }
@@ -75,7 +74,7 @@ class ConfigModule {
     this.conf.reload()
   }
 
-  save() {
+  save () {
     if (!this.conf) {
       throw new Error('Config not loaded.')
     }
