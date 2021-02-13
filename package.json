@@ -20,7 +20,7 @@
   },
   "build": {
     "productName": "Arclight",
-    "appId": "io.fuyumi.arclight",
+    "appId": "com.xaosia.arclight",
     "directories": {
       "output": "build"
     },
