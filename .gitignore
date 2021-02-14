@@ -11,5 +11,5 @@ thumbs.db
 package-lock.json
 
 *.exe
-static/mpv.js/*
 static/tmp/
+.idea/

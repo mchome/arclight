@@ -6,7 +6,7 @@
         <p>{{ softwareVersion }}</p>
       </div>
       <div id="author-info">
-        <p>fuyumi</p>
+        <p>XAOS Interactive</p>
       </div>
       <div id="license-info">
         <p>GPL v3</p>

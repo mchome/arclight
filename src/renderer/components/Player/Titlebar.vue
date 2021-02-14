@@ -35,14 +35,14 @@
 </template>
 
 <script>
-import PinIcon from 'icons/Pin'
-import PinOffIcon from 'icons/PinOff'
-import FullscreenIcon from 'icons/Fullscreen'
-import FullscreenExitIcon from 'icons/FullscreenExit'
-import WindowMinimizeIcon from 'icons/WindowMinimize'
-import WindowRestoreIcon from 'icons/WindowRestore'
-import WindowMaximizeIcon from 'icons/WindowMaximize'
-import WindowCloseIcon from 'icons/WindowClose'
+import PinIcon from 'vue-material-design-icons/Pin'
+import PinOffIcon from 'vue-material-design-icons/PinOff'
+import FullscreenIcon from 'vue-material-design-icons/Fullscreen'
+import FullscreenExitIcon from 'vue-material-design-icons/FullscreenExit'
+import WindowMinimizeIcon from 'vue-material-design-icons/WindowMinimize'
+import WindowRestoreIcon from 'vue-material-design-icons/WindowRestore'
+import WindowMaximizeIcon from 'vue-material-design-icons/WindowMaximize'
+import WindowCloseIcon from 'vue-material-design-icons/WindowClose'
 
 export default {
   components: {
@@ -176,5 +176,9 @@ export default {
 }
 #close-btn:hover {
   background-color: #D41223 !important;
+}
+
+.draggable {
+  -webkit-app-region: drag;
 }
 </style>

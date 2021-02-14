@@ -1,4 +1,6 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
+import ConfigModule from './modules/config'
+import { autoUpdater } from 'electron-updater'
 const path = require('path')
 const {
   createSidePanelWindow,
@@ -38,7 +40,10 @@ ipcMain.on('window-popup', (_, arg) => {
   mainWindow.webContents.send('window-opened', JSON.stringify(popupWindow))
 })
 
-function createWindow () {
+async function createWindow () {
+  const configModule = new ConfigModule()
+  await configModule.load()
+
   mainWindow = new BrowserWindow({
     frame: false,
     transparent: true,
@@ -48,6 +53,7 @@ function createWindow () {
     minHeight: 400,
     useContentSize: true,
     webPreferences: {
+      nodeIntegration: true,
       plugins: true
     }
   })
@@ -79,10 +85,21 @@ function createWindow () {
   })
 }
 
-let pluginPath = path.join(__static, 'mpv.js/mpvjs.node;application/x-mpvjs').split('\\').join('/')
+let os
+switch (process.platform) {
+  case 'darwin':
+    os = 'mac'
+    break
+  case 'win32':
+    os = 'win'
+    break
+}
+
+let pluginPath = path.join(__static, 'mpv.js', os, 'mpvjs.node;application/x-mpvjs').split('\\').join('/')
 if (process.env.NODE_ENV === 'production') {
   pluginPath = pluginPath.replace('app.asar', 'app.asar.unpacked')
 }
+
 app.commandLine.appendSwitch('ignore-gpu-blacklist')
 app.commandLine.appendSwitch('register-pepper-plugins', pluginPath)
 
@@ -109,15 +126,12 @@ app.on('activate', () => {
  * support auto updating. Code Signing with a valid certificate is required.
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
 autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
 
 app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+  if (process.env.NODE_ENV === 'production') {
+    autoUpdater.checkForUpdates()
+  }
 })
- */

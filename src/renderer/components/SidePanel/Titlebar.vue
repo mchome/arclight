@@ -44,13 +44,13 @@
 </template>
 
 <script>
-import MenuIcon from 'icons/Menu'
-import WindowCloseIcon from 'icons/WindowClose'
-import PlaylistPlayIcon from 'icons/PlaylistPlay'
-import ContentCopyIcon from 'icons/ContentCopy'
-import ImageFilterHdrIcon from 'icons/ImageFilterHdr'
-import SettingsIcon from 'icons/Settings'
-import InformationOutlineIcon from 'icons/InformationOutline'
+import MenuIcon from 'vue-material-design-icons/Menu'
+import WindowCloseIcon from 'vue-material-design-icons/WindowClose'
+import PlaylistPlayIcon from 'vue-material-design-icons/PlaylistPlay'
+import ContentCopyIcon from 'vue-material-design-icons/ContentCopy'
+import ImageFilterHdrIcon from 'vue-material-design-icons/ImageFilterHdr'
+import SettingsIcon from 'vue-material-design-icons/Settings'
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline'
 
 export default {
   components: {
@@ -207,5 +207,9 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.draggable {
+  -webkit-app-region: drag;
 }
 </style>

@@ -5,6 +5,10 @@
   "description": "An electron-vue project",
   "license": "GPL-3.0-only",
   "main": "./dist/electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XAOS-Interactive/arclight.git"
+  },
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
@@ -16,11 +20,12 @@
     "pack": "npm run pack:main && npm run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": "npm run lint:fix && electron-rebuild -f -w win-mouse"
+    "postinstall": "npm run lint:fix && electron-rebuild -f -w win-mouse",
+    "release": "build"
   },
   "build": {
     "productName": "Arclight",
-    "appId": "io.fuyumi.arclight",
+    "appId": "com.xaosia.arclight",
     "directories": {
       "output": "build"
     },
@@ -29,7 +34,7 @@
     ],
     "asar": true,
     "asarUnpack": [
-      "dist/electron/static/mpv.js/*"
+      "dist/electron/static/mpv.js/**/*"
     ],
     "fileAssociations": [
       {
@@ -73,7 +78,8 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "publish": ["github"]
     },
     "linux": {
       "icon": "build/icons"
@@ -83,7 +89,10 @@
     "axios": "^0.18.0",
     "electron-drag": "^1.2.2",
     "electron-localshortcut": "^3.1.0",
+    "electron-updater": "^4.3.5",
     "fast-xml-parser": "^3.12.5",
+    "mpv.js-vanilla": "^0.3.4",
+    "teeny-conf": "^4.0.0",
     "vue": "^2.5.17",
     "vue-electron": "^1.0.6",
     "vue-material-design-icons": "^2.1.1",
@@ -108,7 +117,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^3.0.2",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^21.2.0",
     "electron-debug": "^2.0.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-rebuild": "^1.8.2",
